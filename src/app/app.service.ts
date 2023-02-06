@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Qslcard } from 'src/entity/Qslcard.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +9,20 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  rootURL = '/api';
+  rootURL = 'http://localhost:8080';
+  qslCardUrl = '/qslcard';
 
-  getUsers() {
-    return this.http.get(this.rootURL + '/users');
-  }
-
-  addUser(user: any) {
-    return this.http.post(this.rootURL + '/user', {user});
+  captureQsl(qslcard: Qslcard) {
+		this.http.put<Qslcard>(this.rootURL + this.qslCardUrl, qslcard, httpOptions)
+			.subscribe(data => {
+				console.log(data);
+			});
   }
 
 }
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+    /*, Authorization: 'my-auth-token'*/
+  })
+};

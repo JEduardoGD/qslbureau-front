@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 
 @Component({
@@ -18,12 +19,12 @@ export class QslCapturaComponent {
   }
 
 
-  onSubmit(customerData:any) {
-    // Process checkout data here
+  onSubmit() {
+    let u : string = this.checkoutForm.controls['qslto'].value as string;
+    
     this.checkoutForm.reset();
-
-    console.warn('Your order has been submitted' + customerData);
-
-    //this.appService.
+    let qslcard = {} as Qslcard;
+    qslcard.toCallsign = u;
+    this.appService.captureQsl(qslcard);
   }
 }
