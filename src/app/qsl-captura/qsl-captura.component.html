@@ -1,0 +1,14 @@
+<p>qsl-captura works!</p>
+  
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  
+    <div>
+      <label for="name">
+        QSL PARA
+      </label>
+      <input id="qslto" type="text" formControlName="qslto">
+    </div>
+  
+    <button class="button" type="submit">Captura</button>
+  
+  </form>
