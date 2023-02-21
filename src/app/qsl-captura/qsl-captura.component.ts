@@ -21,7 +21,6 @@ export class QslCapturaComponent {
 
   onSubmit() {
     let u : string = this.checkoutForm.controls['qslto'].value as string;
-    
     this.checkoutForm.reset();
     let qslcard = {} as Qslcard;
     qslcard.toCallsign = u;
