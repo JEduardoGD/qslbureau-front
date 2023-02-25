@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { delay, Observable, of, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-   api = 'http://localhost:8080';
    token!: string;
     
    isUserLoggedIn: boolean = false;
@@ -15,11 +15,8 @@ export class AuthService {
    constructor(private http: HttpClient,private router: Router) { }
     
    login(userName: string, password: string): Observable<any> {
-     this.http.post(this.api + '/authenticate', {username: userName, password: password})
+     this.http.post(environment.apiUrl + '/authenticate', {username: userName, password: password})
          .subscribe((resp: any) => {
-            console.log("------------");
-            console.log(resp);
-            console.log("------------");
             localStorage.setItem('auth_token', resp.token);
             localStorage.setItem('isUserLoggedIn', 'true');
             this.router.navigate(['qsl-capture']);

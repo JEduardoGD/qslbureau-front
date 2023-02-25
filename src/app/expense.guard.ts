@@ -18,7 +18,6 @@ export class ExpenseGuard implements CanActivate {
      }
 
      checkLogin(url: string): true | UrlTree {
-        console.log("Url: " + url)
         let val: string =  localStorage.getItem('isUserLoggedIn') + "";
 
         if(val != null && val == "true"){
