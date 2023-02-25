@@ -16,15 +16,18 @@ export class AuthService {
     
    login(userName: string, password: string): Observable<any> {
      this.http.post(this.api + '/authenticate', {username: userName, password: password})
-        .subscribe((resp: any) => {
-           this.router.navigate(['profile']);
-           localStorage.setItem('auth_token', resp.token);
+         .subscribe((resp: any) => {
+            console.log("------------");
+            console.log(resp);
+            console.log("------------");
+            localStorage.setItem('auth_token', resp.token);
+            localStorage.setItem('isUserLoggedIn', 'true');
+            this.router.navigate(['qsl-capture']);
         })
 
-      return of(this.isUserLoggedIn).pipe(delay(1000), tap(val => { 
-         console.log("Is User Authentication is successful: " + val); 
-      })
-      );
+         return of(this.isUserLoggedIn).pipe(delay(1000), tap(val => { 
+            console.log("Is User Authentication is successful: " + val); 
+         }));
    }
 
   logout(): void {
