@@ -15,6 +15,9 @@ export class AuthService {
    constructor(private http: HttpClient,private router: Router) { }
     
    login(userName: string, password: string): Observable<any> {
+      console.log('xxxxxxxxxxxxx')
+      console.log(environment)
+      console.log('xxxxxxxxxxxxx')
      this.http.post(environment.apiUrl + '/authenticate', {username: userName, password: password})
          .subscribe((resp: any) => {
             localStorage.setItem('auth_token', resp.token);
