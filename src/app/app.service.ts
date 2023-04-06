@@ -20,6 +20,7 @@ export class AppService {
         Authorization: `Bearer ${auth_token}`
       })
     };
+    
 		this.http.put<Qslcard>(environment.apiUrl + this.qslCardUrl, qslcard, httpOptions)
 			.subscribe(data => {
 				console.log(data);

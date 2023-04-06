@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { delay, Observable, of, tap } from 'rxjs';
+import { LoginResponse } from 'src/entity/LoginResponse.entity';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,12 +16,10 @@ export class AuthService {
    constructor(private http: HttpClient,private router: Router) { }
     
    login(userName: string, password: string): Observable<any> {
-      console.log('xxxxxxxxxxxxx')
-      console.log(environment)
-      console.log('xxxxxxxxxxxxx')
      this.http.post(environment.apiUrl + '/authenticate', {username: userName, password: password})
          .subscribe((resp: any) => {
-            localStorage.setItem('auth_token', resp.token);
+            localStorage.setItem('auth_token', resp.jwtToken);
+            localStorage.setItem('active_local_id', `${resp.locals[0].id}`)
             localStorage.setItem('isUserLoggedIn', 'true');
             this.router.navigate(['qsl-capture']);
         })
