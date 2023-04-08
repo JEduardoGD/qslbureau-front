@@ -37,15 +37,8 @@ export class AppService {
       icon: 'success',
       title: `Guardado, slot ${data.slotNumber}!`,
       html: `Qsls en el slot: <b>${data.qslsInSlot}</b>`,
-      timer: 2000
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
+      timer: 3000
+    });
   });
   }
 }
