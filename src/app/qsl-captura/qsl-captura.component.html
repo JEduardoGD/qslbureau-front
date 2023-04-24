@@ -1,10 +1,29 @@
 <div class="container-fluid">
-<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="exampleInputEmail1">QSL to</label>
-      <input type="text" class="form-control" id="qslto" formControlName="qslto" aria-describedby="emailHelp">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  
-  </form>
+  <div>
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="exampleInputEmail1">QSL to</label>
+        <input type="text" class="form-control" id="qslto" formControlName="qslto" aria-describedby="emailHelp">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <div *ngIf="displayTable">
+    <table datatable class="row-border hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>To Callsign</th>
+          <th>Slot Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let qsl of qslsInLocal">
+          <td>{{ qsl.qslId }}</td>
+          <td>{{ qsl.toCallsign }}</td>
+          <td>{{ qsl.slotNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

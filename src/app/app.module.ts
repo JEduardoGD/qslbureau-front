@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { DataTablesModule } from "angular-datatables";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    DataTablesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
