@@ -3,6 +3,7 @@ export interface RowObject{
     toCallsign: string;
     datetimecapture: string;
     slotNumber: number;
+    dateTimeCapture: Date;
 }
 
 /*

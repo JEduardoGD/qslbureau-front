@@ -60,7 +60,7 @@ export class AppService {
         Authorization: `Bearer ${auth_token}`
       })
     };
-    return this.http.get<RowObject[]>(environment.apiUrl + this.qslCardUrl + "/byslot/" + localId, httpOptions)
+    return this.http.get<RowObject[]>(environment.apiUrl + this.qslCardUrl + "/bylocalid/" + localId, httpOptions)
     .pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
       this.errorMessage = error.message;
       console.error('There was an error!', error);

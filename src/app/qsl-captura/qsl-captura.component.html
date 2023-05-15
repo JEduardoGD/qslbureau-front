@@ -8,20 +8,22 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
-  <div *ngIf="displayTable">
-    <table datatable class="row-border hover">
+  <div>
+    <table class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>To Callsign</th>
-          <th>Slot Number</th>
+          <th scope="col">ID</th>
+          <th scope="col">Calsign</th>
+          <th scope="col">Slot number</th>
+          <th scope="col">Date time</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let qsl of qslsInLocal">
-          <td>{{ qsl.qslId }}</td>
+          <th scope="row">{{ qsl.qslId }}</th>
           <td>{{ qsl.toCallsign }}</td>
           <td>{{ qsl.slotNumber }}</td>
+          <td>{{ qsl.dateTimeCapture }}</td>
         </tr>
       </tbody>
     </table>
