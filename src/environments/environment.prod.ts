@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://qslbureau-recibir-back:8080',
+    apiUrl: 'http://192.168.0.199:8080',
     key: process.env["key"]
   };
 
