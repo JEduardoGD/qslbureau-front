@@ -42,10 +42,13 @@ export class AppService {
       return of();
   }))
   .subscribe(data => {
+    console.log(data);
+    let str = data.jsonPayload;
+    let obj :Qslcard = JSON.parse(str);
     Swal.fire({
       icon: 'success',
-      title: `Guardado, slot ${data.slotNumber}!`,
-      html: `Qsls en el slot: <b>${data.qslsInSlot}</b>`,
+      title: `Guardado, slot ${obj.slotNumber}!`,
+      html: `Qsls en el slot: <b>${obj.qslsInSlot}</b>`,
       timer: 3000
     });
   });
