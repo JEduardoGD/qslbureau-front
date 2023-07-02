@@ -29,7 +29,10 @@ export class QslCapturaComponent {
     this.checkoutForm.reset();
     let qslcard = {} as Qslcard;
     qslcard.toCallsign = u;
-    this.appService.captureQsl(qslcard);
+    this.appService.captureQslProm(qslcard).then(()=>{
+      this.refreshTable();
+    });
+    
   }
 
   refreshTable(){
