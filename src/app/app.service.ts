@@ -16,7 +16,7 @@ export class AppService {
   qslCardUrl = '/qslcard';
   errorMessage: string | undefined;
 
-  captureQslProm(qslcard: Qslcard){
+  captureQslProm(qslcard: Qslcard):Promise<number>{
     let auth_token = localStorage.getItem('auth_token');
     return new Promise((resolve, reject) => {
       let httpOptions = {
@@ -60,6 +60,7 @@ export class AppService {
             timer: 3000
           });
         }
+        resolve(data);
       });
     });
   }
@@ -74,6 +75,33 @@ export class AppService {
       })
     };
     return this.http.get<RowObject[]>(environment.apiUrl + this.qslCardUrl + "/bylocalid/" + localId, httpOptions)
+    .pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+      this.errorMessage = error.message;
+      console.error('There was an error!', error);
+      // after handling error, return a new observable 
+      // that doesn't emit any values and completes
+      if(error.status == HttpStatusCode.Unauthorized){
+        Swal.fire({
+          icon: 'error',
+          title: `Las credenciales han expirado.`
+        }).then(() =>{
+          this.router.navigate(['/logout']);
+        });
+      }
+      return of();
+  }))
+  }
+
+  deleteQslById(qslId: number){
+    let auth_token = localStorage.getItem('auth_token');
+
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        Authorization: `Bearer ${auth_token}`
+      })
+    };
+    return this.http.delete<number>(environment.apiUrl + this.qslCardUrl + "/deletebyid/" + qslId, httpOptions)
     .pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
       this.errorMessage = error.message;
       console.error('There was an error!', error);
