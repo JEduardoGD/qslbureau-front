@@ -3,7 +3,7 @@
     <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="exampleInputEmail1">QSL to</label>
-        <input type="text" class="form-control" id="qslto" formControlName="qslto" aria-describedby="emailHelp">
+        <input type="text" class="form-control" id="qslto" formControlName="qslto">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -16,14 +16,24 @@
           <th scope="col">Calsign</th>
           <th scope="col">Slot number</th>
           <th scope="col">Date time</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let qsl of qslsInLocal">
+        <tr *ngFor="let qsl of qslsInLocal" class="{{ qsl.status == 1002 ? 'table-danger' : 'default' }}">
           <th scope="row">{{ qsl.qslId }}</th>
           <td>{{ qsl.toCallsign }}</td>
           <td>{{ qsl.slotNumber }}</td>
           <td>{{ qsl.dateTimeCapture }}</td>
+          <td>
+            <button
+              *ngIf="qsl.status == 1001"
+              (click)="confirmDelteQsl(qsl.qslId, qsl.toCallsign)"
+              type="button"
+              class="btn btn-link btn-rounded btn-sm fw-bold"
+              data-mdb-ripple-color="dark">Borrar
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
