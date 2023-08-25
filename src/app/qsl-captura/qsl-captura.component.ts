@@ -42,10 +42,13 @@ export class QslCapturaComponent {
 
   refreshTable(){
     let activeLocalId = localStorage.getItem('active_local_id');
-    this.appService.qslsByLocalId(activeLocalId)
-    .subscribe((response: any) => {
-      this.qslsInLocal = response;
-    });
+    if(activeLocalId != null){
+      console.log(`active local: ${activeLocalId}`);
+      this.appService.qslsByLocalId(activeLocalId)
+      .subscribe((response: any) => {
+        this.qslsInLocal = response;
+      });
+    }
   }
 
   confirmDelteQsl(idqsl : number, toCallsign: string) {

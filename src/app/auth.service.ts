@@ -19,8 +19,8 @@ export class AuthService {
      this.http.post(environment.apiUrl + '/authenticate', {username: userName, password: password})
          .subscribe((resp: any) => {
             localStorage.setItem('auth_token', resp.jwtToken);
-            localStorage.setItem('active_local_id', `${resp.locals[0].id}`)
-            localStorage.setItem('isUserLoggedIn', 'true');
+            localStorage.setItem('id_capturer', resp.capturerId);
+            localStorage.setItem('isUserLoggedIn', `${true}`);
             this.router.navigate(['qsl-capture']);
         })
 
@@ -30,7 +30,10 @@ export class AuthService {
    }
 
   logout(): void {
-  this.isUserLoggedIn = false;
-     localStorage.removeItem('isUserLoggedIn'); 
+   this.isUserLoggedIn = false;
+   localStorage.removeItem('auth_token');
+   localStorage.removeItem('id_capturer');
+   localStorage.removeItem('active_local_id');
+   localStorage.removeItem('isUserLoggedIn'); 
   }
 }
