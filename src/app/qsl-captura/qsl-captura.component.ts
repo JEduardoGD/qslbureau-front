@@ -94,6 +94,14 @@ export class QslCapturaComponent {
         hayError = true;
         errormsg = 'La cadena solo puede contener caracteres en mayuscula';
       }
+
+      let activeLocalId = localStorage.getItem('active_local_id');
+      console.log('xxxxxxxxxxxxxx');
+      console.log(activeLocalId);
+      if(activeLocalId == null){
+        hayError = true;
+        errormsg = 'Debe seleccionar el local activo';
+      }
   
       if(hayError){
         Swal.fire({
