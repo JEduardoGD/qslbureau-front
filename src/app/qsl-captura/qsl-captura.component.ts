@@ -4,6 +4,7 @@ import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
 import Swal from 'sweetalert2';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-qsl-captura',
@@ -108,6 +109,9 @@ export class QslCapturaComponent {
           title: 'Error al capturar',
           text: `${errormsg}`,
           icon: 'error',
+        }).then(()=>{
+          let myModal = new bootstrap.Modal('#staticBackdrop', { keyboard: false });
+          myModal.show();
         });
       }
   
