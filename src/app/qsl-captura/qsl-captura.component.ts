@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
+import { Local } from 'src/entity/Local.entity';
 
 @Component({
   selector: 'app-qsl-captura',
   templateUrl: './qsl-captura.component.html',
   styleUrls: ['./qsl-captura.component.css']
 })
-export class QslCapturaComponent {
+export class QslCapturaComponent implements OnInit {
   checkoutForm;
   qslsInLocal: RowObject[] = [];
+
+  locals: Local[] = [];
+  localSelected : string = '';
 
 
   constructor(fb: FormBuilder, private appService: AppService){
@@ -24,6 +28,17 @@ export class QslCapturaComponent {
     this.refreshTable();
   }
 
+  ngOnInit(): void {
+    let localsString = localStorage.getItem('locals');
+    if(localsString != null){
+      this.locals = JSON.parse(localsString);
+      if(this.locals.length == 1){
+        this.localSelected = this.locals[0].id + '';
+        localStorage.setItem('active_local_id', this.locals[0].id + '');
+      }
+    }
+  }
+
   onSubmit() {
     let u : string = this.checkoutForm.controls['qslto'].value as string;
     this.validateCallsign(u).then((hayError) => {
@@ -31,6 +46,7 @@ export class QslCapturaComponent {
         this.checkoutForm.reset();
         let qslcard = {} as Qslcard;
         qslcard.toCallsign = u;
+        qslcard.local = +this.localSelected;
         this.appService.captureQslProm(qslcard).then((data:any) => {
           this.refreshTable();
         }
@@ -117,5 +133,11 @@ export class QslCapturaComponent {
   
       resolve(hayError);
     });
+  }
+
+  changeLocalSelected() {
+    console.log(this.localSelected);
+    localStorage.setItem('active_local_id', this.localSelected);
+    this.refreshTable();
   }
 }

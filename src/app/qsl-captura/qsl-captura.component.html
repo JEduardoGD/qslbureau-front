@@ -5,7 +5,6 @@
     Launch static backdrop modal
   </button>
   -->
-
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -15,7 +14,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="localSelected" (change)="changeLocalSelected()">
+            <option *ngFor="let local of locals" [value]="local.id">
+               {{ local.id }}
+            </option>
+          </select>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
