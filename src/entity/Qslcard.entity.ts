@@ -4,5 +4,6 @@ export interface Qslcard {
     slotNumber: number | undefined;
     qslsInSlot: number | undefined;
     dateTimeCapture: Date | undefined;
-    local: number | undefined;
+    localId: number | undefined;
+    idCapturer: number;
 }

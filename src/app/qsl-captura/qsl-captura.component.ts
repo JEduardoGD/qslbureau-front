@@ -17,7 +17,7 @@ export class QslCapturaComponent implements OnInit {
   qslsInLocal: RowObject[] = [];
 
   locals: Local[] = [];
-  localSelected : string = '';
+  localIdSelected : string = '';
 
 
   constructor(fb: FormBuilder, private appService: AppService){
@@ -32,21 +32,28 @@ export class QslCapturaComponent implements OnInit {
     let localsString = localStorage.getItem('locals');
     if(localsString != null){
       this.locals = JSON.parse(localsString);
-      if(this.locals.length == 1){
-        this.localSelected = this.locals[0].id + '';
-        localStorage.setItem('active_local_id', this.locals[0].id + '');
-      }
+    }
+    if(this.locals.length == 1){
+      this.localIdSelected = this.locals[0].id + '';
+      localStorage.setItem('active_local_id', this.locals[0].id + '');
     }
   }
 
   onSubmit() {
     let u : string = this.checkoutForm.controls['qslto'].value as string;
+    let idCapturer = localStorage.getItem('id_capturer');
+    let activeLocalId:number = 0;
+    let ls = localStorage.getItem('active_local_id')
+    if(ls != null){
+      activeLocalId = +ls;
+    }
     this.validateCallsign(u).then((hayError) => {
-      if(!hayError){
+      if(!hayError && idCapturer != null){
         this.checkoutForm.reset();
         let qslcard = {} as Qslcard;
         qslcard.toCallsign = u;
-        qslcard.local = +this.localSelected;
+        qslcard.localId = +activeLocalId;
+        qslcard.idCapturer = +idCapturer;
         this.appService.captureQslProm(qslcard).then((data:any) => {
           this.refreshTable();
         }
@@ -113,8 +120,6 @@ export class QslCapturaComponent implements OnInit {
       }
 
       let activeLocalId = localStorage.getItem('active_local_id');
-      console.log('xxxxxxxxxxxxxx');
-      console.log(activeLocalId);
       if(activeLocalId == null){
         hayError = true;
         errormsg = 'Debe seleccionar el local activo';
@@ -136,8 +141,8 @@ export class QslCapturaComponent implements OnInit {
   }
 
   changeLocalSelected() {
-    console.log(this.localSelected);
-    localStorage.setItem('active_local_id', this.localSelected);
+    console.log(this.localIdSelected);
+    localStorage.setItem('active_local_id', this.localIdSelected);
     this.refreshTable();
   }
 }
