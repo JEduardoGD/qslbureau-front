@@ -34,7 +34,9 @@ export class AuthService {
    localStorage.removeItem('auth_token');
    localStorage.removeItem('id_capturer');
    localStorage.removeItem('active_local_id');
+   localStorage.removeItem('active_local_name');
    localStorage.removeItem('isUserLoggedIn');
    localStorage.removeItem('locals');
+   
   }
 }

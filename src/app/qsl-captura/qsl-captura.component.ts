@@ -18,6 +18,7 @@ export class QslCapturaComponent implements OnInit {
 
   locals: Local[] = [];
   localIdSelected : string = '';
+  localNameSelected : string = '';
 
 
   constructor(fb: FormBuilder, private appService: AppService){
@@ -43,9 +44,9 @@ export class QslCapturaComponent implements OnInit {
     let u : string = this.checkoutForm.controls['qslto'].value as string;
     let idCapturer = localStorage.getItem('id_capturer');
     let activeLocalId:number = 0;
-    let ls = localStorage.getItem('active_local_id')
-    if(ls != null){
-      activeLocalId = +ls;
+    let lai = localStorage.getItem('active_local_id')
+    if(lai != null){
+      activeLocalId = +lai;
     }
     this.validateCallsign(u).then((hayError) => {
       if(!hayError && idCapturer != null){
@@ -143,6 +144,15 @@ export class QslCapturaComponent implements OnInit {
   changeLocalSelected() {
     console.log(this.localIdSelected);
     localStorage.setItem('active_local_id', this.localIdSelected);
+    let locals = localStorage.getItem('locals');
+    if(locals != null && locals != ''){
+      let localsObjs: Local[] = JSON.parse(locals);
+      let localObj = localsObjs.find(q => q.id == +this.localIdSelected);
+      if(localObj != null){
+        localStorage.setItem('active_local_name', localObj.name);
+        this.localNameSelected = localObj.name;
+      }
+    }
     this.refreshTable();
   }
 }
