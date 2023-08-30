@@ -11,6 +11,8 @@ export class AppComponent {
   isUserLoggedIn = false;
 
   constructor(private authService: AuthService) {}
+  activeLocalId : number = 0;
+  activeLocalName : string = '';
 
   ngOnInit() {
      let storeData = localStorage.getItem("isUserLoggedIn");
@@ -18,9 +20,18 @@ export class AppComponent {
 
      if( storeData != null && storeData == "true")
         this.isUserLoggedIn = true;
-     else
-
-
+     else {
         this.isUserLoggedIn = false;
+     }
+    
+    let activeLocalId = localStorage.getItem('active_local_id');
+    if(activeLocalId != null){
+      this.activeLocalId = +activeLocalId;
+    }
+
+    let activeLocalName = localStorage.getItem('active_local_name');
+    if(activeLocalName != null){
+      this.activeLocalName = activeLocalName;
+    }
   }
 }

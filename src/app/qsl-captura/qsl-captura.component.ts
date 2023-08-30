@@ -1,18 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
 import Swal from 'sweetalert2';
+import * as bootstrap from 'bootstrap';
+import { Local } from 'src/entity/Local.entity';
 
 @Component({
   selector: 'app-qsl-captura',
   templateUrl: './qsl-captura.component.html',
   styleUrls: ['./qsl-captura.component.css']
 })
-export class QslCapturaComponent {
+export class QslCapturaComponent implements OnInit {
   checkoutForm;
   qslsInLocal: RowObject[] = [];
+
+  locals: Local[] = [];
+  localIdSelected : string = '';
+  localNameSelected : string = '';
 
 
   constructor(fb: FormBuilder, private appService: AppService){
@@ -23,13 +29,32 @@ export class QslCapturaComponent {
     this.refreshTable();
   }
 
+  ngOnInit(): void {
+    let localsString = localStorage.getItem('locals');
+    if(localsString != null){
+      this.locals = JSON.parse(localsString);
+    }
+    if(this.locals.length == 1){
+      this.localIdSelected = this.locals[0].id + '';
+      localStorage.setItem('active_local_id', this.locals[0].id + '');
+    }
+  }
+
   onSubmit() {
     let u : string = this.checkoutForm.controls['qslto'].value as string;
+    let idCapturer = localStorage.getItem('id_capturer');
+    let activeLocalId:number = 0;
+    let lai = localStorage.getItem('active_local_id')
+    if(lai != null){
+      activeLocalId = +lai;
+    }
     this.validateCallsign(u).then((hayError) => {
-      if(!hayError){
+      if(!hayError && idCapturer != null){
         this.checkoutForm.reset();
         let qslcard = {} as Qslcard;
         qslcard.toCallsign = u;
+        qslcard.localId = +activeLocalId;
+        qslcard.idCapturer = +idCapturer;
         this.appService.captureQslProm(qslcard).then((data:any) => {
           this.refreshTable();
         }
@@ -94,16 +119,40 @@ export class QslCapturaComponent {
         hayError = true;
         errormsg = 'La cadena solo puede contener caracteres en mayuscula';
       }
+
+      let activeLocalId = localStorage.getItem('active_local_id');
+      if(activeLocalId == null){
+        hayError = true;
+        errormsg = 'Debe seleccionar el local activo';
+      }
   
       if(hayError){
         Swal.fire({
           title: 'Error al capturar',
           text: `${errormsg}`,
           icon: 'error',
+        }).then(()=>{
+          let myModal = new bootstrap.Modal('#staticBackdrop', { keyboard: false });
+          myModal.show();
         });
       }
   
       resolve(hayError);
     });
+  }
+
+  changeLocalSelected() {
+    console.log(this.localIdSelected);
+    localStorage.setItem('active_local_id', this.localIdSelected);
+    let locals = localStorage.getItem('locals');
+    if(locals != null && locals != ''){
+      let localsObjs: Local[] = JSON.parse(locals);
+      let localObj = localsObjs.find(q => q.id == +this.localIdSelected);
+      if(localObj != null){
+        localStorage.setItem('active_local_name', localObj.name);
+        this.localNameSelected = localObj.name;
+      }
+    }
+    this.refreshTable();
   }
 }
