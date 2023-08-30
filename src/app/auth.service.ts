@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { delay, Observable, of, tap } from 'rxjs';
-import { LoginResponse } from 'src/entity/LoginResponse.entity';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -21,6 +20,7 @@ export class AuthService {
             localStorage.setItem('auth_token', resp.jwtToken);
             localStorage.setItem('id_capturer', resp.capturerId);
             localStorage.setItem('isUserLoggedIn', `${true}`);
+            localStorage.setItem('locals', JSON.stringify(resp.locals));
             this.router.navigate(['qsl-capture']);
         })
 
@@ -34,6 +34,9 @@ export class AuthService {
    localStorage.removeItem('auth_token');
    localStorage.removeItem('id_capturer');
    localStorage.removeItem('active_local_id');
-   localStorage.removeItem('isUserLoggedIn'); 
+   localStorage.removeItem('active_local_name');
+   localStorage.removeItem('isUserLoggedIn');
+   localStorage.removeItem('locals');
+   
   }
 }
