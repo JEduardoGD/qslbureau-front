@@ -20,6 +20,9 @@ export class QslCapturaComponent implements OnInit {
   localIdSelected : string = '';
   localNameSelected : string = '';
 
+  qslTo: string = '';
+  qslVia: string = '';
+
 
   constructor(fb: FormBuilder, private appService: AppService){
     this.checkoutForm = fb.group({
@@ -41,18 +44,18 @@ export class QslCapturaComponent implements OnInit {
   }
 
   onSubmit() {
-    let u : string = this.checkoutForm.controls['qslto'].value as string;
     let idCapturer = localStorage.getItem('id_capturer');
     let activeLocalId:number = 0;
     let lai = localStorage.getItem('active_local_id')
     if(lai != null){
       activeLocalId = +lai;
     }
-    this.validateCallsign(u).then((hayError) => {
+    this.validateCallsign(this.qslTo).then((hayError) => {
       if(!hayError && idCapturer != null){
         this.checkoutForm.reset();
         let qslcard = {} as Qslcard;
-        qslcard.toCallsign = u;
+        qslcard.to = this.qslTo;
+        qslcard.via = this.qslVia;
         qslcard.localId = +activeLocalId;
         qslcard.idCapturer = +idCapturer;
         this.appService.captureQslProm(qslcard).then((data:any) => {
