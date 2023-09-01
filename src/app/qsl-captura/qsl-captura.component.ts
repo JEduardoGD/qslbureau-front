@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
@@ -13,19 +13,18 @@ import { Local } from 'src/entity/Local.entity';
   styleUrls: ['./qsl-captura.component.css']
 })
 export class QslCapturaComponent implements OnInit {
-  checkoutForm;
+  //checkoutForm;
   qslsInLocal: RowObject[] = [];
 
   locals: Local[] = [];
   localIdSelected : string = '';
   localNameSelected : string = '';
 
+  qslTo: string = '';
+  qslVia: string = '';
+
 
   constructor(fb: FormBuilder, private appService: AppService){
-    this.checkoutForm = fb.group({
-      qslto: ["", Validators.required]
-    });
-
     this.refreshTable();
   }
 
@@ -41,18 +40,17 @@ export class QslCapturaComponent implements OnInit {
   }
 
   onSubmit() {
-    let u : string = this.checkoutForm.controls['qslto'].value as string;
     let idCapturer = localStorage.getItem('id_capturer');
     let activeLocalId:number = 0;
     let lai = localStorage.getItem('active_local_id')
     if(lai != null){
       activeLocalId = +lai;
     }
-    this.validateCallsign(u).then((hayError) => {
+    this.validateCallsign(this.qslTo).then((hayError) => {
       if(!hayError && idCapturer != null){
-        this.checkoutForm.reset();
         let qslcard = {} as Qslcard;
-        qslcard.toCallsign = u;
+        qslcard.to = this.qslTo;
+        qslcard.via = this.qslVia;
         qslcard.localId = +activeLocalId;
         qslcard.idCapturer = +idCapturer;
         this.appService.captureQslProm(qslcard).then((data:any) => {
@@ -101,6 +99,9 @@ export class QslCapturaComponent implements OnInit {
   }  
 
   validateCallsign(callsign: string): Promise<boolean> {
+    console.log('==>');
+    console.log(callsign);
+    console.log('==>');
     return new Promise((resolve, reject) => {
       let errormsg = '';
       let hayError = false;
