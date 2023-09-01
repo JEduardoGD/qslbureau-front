@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
@@ -13,7 +13,7 @@ import { Local } from 'src/entity/Local.entity';
   styleUrls: ['./qsl-captura.component.css']
 })
 export class QslCapturaComponent implements OnInit {
-  checkoutForm;
+  //checkoutForm;
   qslsInLocal: RowObject[] = [];
 
   locals: Local[] = [];
@@ -25,10 +25,6 @@ export class QslCapturaComponent implements OnInit {
 
 
   constructor(fb: FormBuilder, private appService: AppService){
-    this.checkoutForm = fb.group({
-      qslto: ["", Validators.required]
-    });
-
     this.refreshTable();
   }
 
@@ -52,7 +48,6 @@ export class QslCapturaComponent implements OnInit {
     }
     this.validateCallsign(this.qslTo).then((hayError) => {
       if(!hayError && idCapturer != null){
-        this.checkoutForm.reset();
         let qslcard = {} as Qslcard;
         qslcard.to = this.qslTo;
         qslcard.via = this.qslVia;
@@ -104,6 +99,9 @@ export class QslCapturaComponent implements OnInit {
   }  
 
   validateCallsign(callsign: string): Promise<boolean> {
+    console.log('==>');
+    console.log(callsign);
+    console.log('==>');
     return new Promise((resolve, reject) => {
       let errormsg = '';
       let hayError = false;
