@@ -1,6 +1,7 @@
 export interface RowObject{
     qslId: number;
-    toCallsign: string;
+    to: string;
+    via: string;
     datetimecapture: string;
     slotNumber: number;
     dateTimeCapture: Date;

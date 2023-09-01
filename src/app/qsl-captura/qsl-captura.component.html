@@ -26,13 +26,19 @@
       </div>
     </div>
   </div>
-  <div>
-    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <div class="container">
+    <form #form="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="exampleInputEmail1">QSL to</label>
-        <input type="text" class="form-control" id="qslto" formControlName="qslto">
+        <label for="exampleInputEmail1">QSL TO</label>
+        <input type="text" class="form-control" id="qslto" name="qslto" [(ngModel)]="qslTo">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="form-group">
+        <label for="exampleInputEmail1">QSL VIA</label>
+        <input type="text" class="form-control" id="qslvia" name="qslvia" [(ngModel)]="qslVia">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
     </form>
   </div>
   <div>
@@ -40,7 +46,8 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Calsign</th>
+          <th scope="col">TO</th>
+          <th scope="col">via</th>
           <th scope="col">Slot number</th>
           <th scope="col">Date time</th>
           <th scope="col">Actions</th>
@@ -49,13 +56,14 @@
       <tbody>
         <tr *ngFor="let qsl of qslsInLocal" class="{{ qsl.status == 1002 ? 'table-danger' : 'default' }}">
           <th scope="row">{{ qsl.qslId }}</th>
-          <td>{{ qsl.toCallsign }}</td>
+          <td>{{ qsl.to }}</td>
+          <td>{{ qsl.via }}</td>
           <td>{{ qsl.slotNumber }}</td>
           <td>{{ qsl.dateTimeCapture | date:'medium' }}</td>
           <td>
             <button
               *ngIf="qsl.status == 1001"
-              (click)="confirmDelteQsl(qsl.qslId, qsl.toCallsign)"
+              (click)="confirmDelteQsl(qsl.qslId, qsl.to)"
               type="button"
               class="btn btn-link btn-rounded btn-sm fw-bold"
               data-mdb-ripple-color="dark">Borrar
