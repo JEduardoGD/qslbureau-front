@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
@@ -12,7 +12,9 @@ import { Local } from 'src/entity/Local.entity';
   templateUrl: './qsl-captura.component.html',
   styleUrls: ['./qsl-captura.component.css']
 })
-export class QslCapturaComponent implements OnInit {
+export class QslCapturaComponent implements OnInit, AfterViewInit{
+  @ViewChild('qslto') qsltoInput: any;
+
   //checkoutForm;
   qslsInLocal: RowObject[] = [];
 
@@ -26,6 +28,12 @@ export class QslCapturaComponent implements OnInit {
 
   constructor(fb: FormBuilder, private appService: AppService){
     this.refreshTable();
+  }
+
+  ngAfterViewInit(): void {
+    console.log('--------------');
+    console.log(this.qsltoInput);
+    this.qsltoInput.nativeElement.focus();
   }
 
   ngOnInit(): void {
@@ -54,6 +62,8 @@ export class QslCapturaComponent implements OnInit {
         qslcard.localId = +activeLocalId;
         qslcard.idCapturer = +idCapturer;
         this.appService.captureQslProm(qslcard).then((data:any) => {
+          this.qslTo = '';
+          this.qslVia = '';
           this.refreshTable();
         }
         ).catch((e) => {
@@ -61,6 +71,7 @@ export class QslCapturaComponent implements OnInit {
         });
       }
     });
+    this.qsltoInput.nativeElement.focus();
   }
 
   refreshTable(){
