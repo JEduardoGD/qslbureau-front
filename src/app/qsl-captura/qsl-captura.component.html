@@ -30,7 +30,7 @@
     <form #form="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="exampleInputEmail1">QSL TO</label>
-        <input type="text" class="form-control" id="qslto" name="qslto" [(ngModel)]="qslTo">
+        <input type="text" class="form-control" #qslto id="qslto" name="qslto" [(ngModel)]="qslTo">
       </div>
       <div class="form-group">
         <label for="exampleInputEmail1">QSL VIA</label>
