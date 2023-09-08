@@ -7,4 +7,6 @@ export interface Qslcard {
     dateTimeCapture: Date | undefined;
     localId: number | undefined;
     idCapturer: number;
+    qslToRecordFound: boolean;
+    qslViaRecordFound: boolean;
 }

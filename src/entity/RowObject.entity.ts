@@ -6,4 +6,6 @@ export interface RowObject{
     slotNumber: number;
     dateTimeCapture: Date;
     status: number;
+    qslToRecordFound:boolean;
+    qslViaRecordFound:boolean;
 }

@@ -77,7 +77,6 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
   refreshTable(){
     let activeLocalId = localStorage.getItem('active_local_id');
     if(activeLocalId != null){
-      console.log(`active local: ${activeLocalId}`);
       this.appService.qslsByLocalId(activeLocalId)
       .subscribe((response: any) => {
         this.qslsInLocal = response;
