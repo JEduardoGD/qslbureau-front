@@ -47,7 +47,7 @@ export class AppService {
           let str = data.jsonPayload;
           let obj :Qslcard = JSON.parse(str);
           Swal.fire({
-            icon: 'success',
+            icon: (obj.qslToRecordFound === false || obj.qslViaRecordFound === false) ? 'warning' : 'success',
             title: `Guardado, slot ${obj.slotNumber}!`,
             html: `Qsls en el slot: <b>${obj.qslsInSlot}</b>`,
             timer: 3000

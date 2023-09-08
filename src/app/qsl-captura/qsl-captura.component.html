@@ -54,10 +54,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let qsl of qslsInLocal" class="{{ qsl.status == 1002 ? 'table-danger' : 'default' }}">
+        <tr *ngFor="let qsl of qslsInLocal" class="{{ qsl.status == 1002 ? 'table-danger' : (qsl.qslToRecordFound === false || qsl.qslViaRecordFound === false ? 'table-warning' : 'table-default') }}">
           <th scope="row">{{ qsl.qslId }}</th>
-          <td>{{ qsl.to }}</td>
-          <td>{{ qsl.via }}</td>
+          <td class="{{ qsl.qslToRecordFound  === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}">{{ qsl.to }}</td>
+          <td class="{{ qsl.qslViaRecordFound === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}">{{ qsl.via }}</td>
           <td>{{ qsl.slotNumber }}</td>
           <td>{{ qsl.dateTimeCapture | date:'medium' }}</td>
           <td>
