@@ -10,13 +10,15 @@ import { LogoutComponent } from './logout/logout.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { DataTablesModule } from "angular-datatables";
+import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QslCapturaComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    ConsolidateSlotsComponent
   ],
   imports: [
     BrowserModule,
