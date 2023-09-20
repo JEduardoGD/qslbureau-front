@@ -1,11 +1,4 @@
 <div class="container-fluid">
-  <!-- Button trigger modal -->
-  <!--
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Launch static backdrop modal
-  </button>
-  -->
-  <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -56,8 +49,8 @@
       <tbody>
         <tr *ngFor="let qsl of qslsInLocal" class="{{ qsl.status == 1002 ? 'table-danger' : (qsl.qslToRecordFound === false || qsl.qslViaRecordFound === false ? 'table-warning' : 'table-default') }}">
           <th scope="row">{{ qsl.qslId }}</th>
-          <td class="{{ qsl.qslToRecordFound  === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}">{{ qsl.to }}</td>
-          <td class="{{ qsl.qslViaRecordFound === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}">{{ qsl.via }}</td>
+          <td class="{{ qsl.qslToRecordFound  === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}"><a                          href="https://www.qrz.com/db/{{ qsl.to }}"  target="_blank" class="link-primary">{{ qsl.to }}</a></td>
+          <td class="{{ qsl.qslViaRecordFound === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}"><a *ngIf="qsl.via !== null" href="https://www.qrz.com/db/{{ qsl.via }}" target="_blank" class="link-primary">{{ qsl.via }}</a></td>
           <td>{{ qsl.slotNumber }}</td>
           <td>{{ qsl.dateTimeCapture | date:'medium' }}</td>
           <td>
