@@ -5,11 +5,13 @@ import { ExpenseGuard } from './expense.guard';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { QslCapturaComponent } from './qsl-captura/qsl-captura.component';
+import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
-  { path: 'qsl-capture', component: QslCapturaComponent, canActivate: [ExpenseGuard]}
+  { path: 'qsl-capture', component: QslCapturaComponent, canActivate: [ExpenseGuard]},
+  { path: 'slot-consolidate', component: ConsolidateSlotsComponent, canActivate: [ExpenseGuard]}
 ];
 
 @NgModule({
