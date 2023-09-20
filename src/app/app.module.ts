@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { DataTablesModule } from "angular-datatables";
 import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots.component';
+import { ConsolidateSlotsService } from './consolidate-slots.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots
     SweetAlert2Module.forRoot(),
     DataTablesModule
   ],
-  providers: [],
+  providers: [ConsolidateSlotsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
