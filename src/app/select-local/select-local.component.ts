@@ -11,8 +11,6 @@ export class SelectLocalComponent implements OnInit {
   locals: Local[] = [];
 
   changeLocalSelected() {
-    console.log('>>>>>>>>>>>>>>>>>>');
-    console.log(this.localIdSelected);
     localStorage.setItem('active_local_id', this.localIdSelected);
     let locals = localStorage.getItem('locals');
     if(locals != null && locals != ''){
