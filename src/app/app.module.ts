@@ -12,6 +12,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { DataTablesModule } from "angular-datatables";
 import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots.component';
 import { ConsolidateSlotsService } from './consolidate-slots.service';
+import { SelectLocalComponent } from './select-local/select-local.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ConsolidateSlotsService } from './consolidate-slots.service';
     QslCapturaComponent,
     LoginComponent,
     LogoutComponent,
-    ConsolidateSlotsComponent
+    ConsolidateSlotsComponent,
+    SelectLocalComponent
   ],
   imports: [
     BrowserModule,

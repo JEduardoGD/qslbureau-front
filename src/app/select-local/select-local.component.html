@@ -1,0 +1,16 @@
+<div class="nav">
+  Navbar
+  <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+  <a class="nav-link" routerLink="qsl-capture">QSL captura</a>
+  <a class="nav-link" routerLink="slot-consolidate">Consolidar slots</a>
+  <a class="nav-link" *ngIf="!isUserLoggedIn" routerLink="/login">Login</a>
+  <a class="nav-link" *ngIf="isUserLoggedIn" routerLink="/logout">Logout</a>
+  <!--a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a-->
+  <form class="d-flex" role="search">
+    <select class="form-select" aria-label="Default select example" [(ngModel)]="localIdSelected" (change)="changeLocalSelected()" name="selectx">
+      <option *ngFor="let local of locals" [ngValue]="local.id">
+         {{ local.name }}
+      </option>
+    </select>
+  </form>
+</div>

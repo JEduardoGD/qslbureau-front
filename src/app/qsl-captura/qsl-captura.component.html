@@ -49,8 +49,8 @@
       <tbody>
         <tr *ngFor="let qsl of qslsInLocal" class="{{ qsl.status == 1002 ? 'table-danger' : (qsl.qslToRecordFound === false || qsl.qslViaRecordFound === false ? 'table-warning' : 'table-default') }}">
           <th scope="row">{{ qsl.qslId }}</th>
-          <td class="{{ qsl.qslToRecordFound  === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}"><a                          href="https://www.qrz.com/db/{{ qsl.to }}"  target="_blank" class="link-primary">{{ qsl.to }}</a></td>
-          <td class="{{ qsl.qslViaRecordFound === false ? 'font-weight-bold text-danger' : 'font-weight-normal' }}"><a *ngIf="qsl.via !== null" href="https://www.qrz.com/db/{{ qsl.via }}" target="_blank" class="link-primary">{{ qsl.via }}</a></td>
+          <td><a                          href="https://www.qrz.com/db/{{ qsl.to }}"  class="{{ qsl.qslToRecordFound  === false ? 'font-weight-bold link-danger' : 'font-weight-normal' }}"                >{{ qsl.to }}</a></td>
+          <td><a *ngIf="qsl.via !== null" href="https://www.qrz.com/db/{{ qsl.via }}" class="{{ qsl.qslViaRecordFound === false ? 'font-weight-bold link-danger' : 'font-weight-normal' }}" target="_blank">{{ qsl.via }}</a></td>
           <td>{{ qsl.slotNumber }}</td>
           <td>{{ qsl.dateTimeCapture | date:'medium' }}</td>
           <td>
