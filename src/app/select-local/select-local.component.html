@@ -1,25 +1,16 @@
-<nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="qsl-capture">Captura QSL</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <select class="form-select" aria-label="Default select example" [(ngModel)]="localIdSelected" (change)="changeLocalSelected()" name="selectx">
-          <option *ngFor="let local of locals" [ngValue]="local.id">
-             {{ local.name }}
-          </option>
-        </select>
-      </form>
-    </div>
-  </div>
-</nav>
+<div class="nav">
+  Navbar
+  <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+  <a class="nav-link" routerLink="qsl-capture">QSL captura</a>
+  <a class="nav-link" routerLink="slot-consolidate">Consolidar slots</a>
+  <a class="nav-link" *ngIf="!isUserLoggedIn" routerLink="/login">Login</a>
+  <a class="nav-link" *ngIf="isUserLoggedIn" routerLink="/logout">Logout</a>
+  <!--a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a-->
+  <form class="d-flex" role="search">
+    <select class="form-select" aria-label="Default select example" [(ngModel)]="localIdSelected" (change)="changeLocalSelected()" name="selectx">
+      <option *ngFor="let local of locals" [ngValue]="local.id">
+         {{ local.name }}
+      </option>
+    </select>
+  </form>
+</div>

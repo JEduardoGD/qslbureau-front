@@ -7,8 +7,10 @@ import { Local } from 'src/entity/Local.entity';
   styleUrls: ['./select-local.component.css']
 })
 export class SelectLocalComponent implements OnInit {
+  navbarCollapsed = true;
   localIdSelected : string = '';
   locals: Local[] = [];
+  isUserLoggedIn = localStorage.getItem('isUserLoggedIn') == 'true';
 
   changeLocalSelected() {
     localStorage.setItem('active_local_id', this.localIdSelected);
