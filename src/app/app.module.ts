@@ -14,6 +14,7 @@ import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots
 import { ConsolidateSlotsService } from './consolidate-slots.service';
 import { SelectLocalComponent } from './select-local/select-local.component';
 import { SlotComponent } from './slot/slot.component';
+import { SlotSendComponentComponent } from './slot-send-component/slot-send-component.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SlotComponent } from './slot/slot.component';
     LogoutComponent,
     ConsolidateSlotsComponent,
     SelectLocalComponent,
-    SlotComponent
+    SlotComponent,
+    SlotSendComponentComponent
   ],
   imports: [
     BrowserModule,
