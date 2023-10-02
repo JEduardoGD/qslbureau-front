@@ -13,6 +13,7 @@ import { DataTablesModule } from "angular-datatables";
 import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots.component';
 import { ConsolidateSlotsService } from './consolidate-slots.service';
 import { SelectLocalComponent } from './select-local/select-local.component';
+import { SlotComponent } from './slot/slot.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SelectLocalComponent } from './select-local/select-local.component';
     LoginComponent,
     LogoutComponent,
     ConsolidateSlotsComponent,
-    SelectLocalComponent
+    SelectLocalComponent,
+    SlotComponent
   ],
   imports: [
     BrowserModule,

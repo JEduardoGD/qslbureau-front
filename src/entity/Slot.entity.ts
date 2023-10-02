@@ -7,4 +7,6 @@ export interface Slot {
     createdAt: Date | undefined;
     closedAt: Date | undefined;
     statusId: number | undefined;
+    qslsInSlot: number | undefined;
+    confirmCode: string | undefined;
 }
