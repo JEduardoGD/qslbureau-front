@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { SlotService } from '../slot.service';
 import Swal from 'sweetalert2';
 import { Slot } from 'src/entity/Slot.entity';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-slot',
@@ -9,6 +10,9 @@ import { Slot } from 'src/entity/Slot.entity';
   styleUrls: ['./slot.component.css']
 })
 export class SlotComponent implements AfterViewInit{
+sendSlot(arg0: number|undefined) {
+throw new Error('Method not implemented.');
+}
 
   slotsInLocal: Slot[] = [];
   slotEdited: Slot = {
@@ -24,7 +28,7 @@ export class SlotComponent implements AfterViewInit{
     confirmCode: undefined
   };
   
-  constructor(private slotService: SlotService){}
+  constructor(private slotService: SlotService, private router: Router){}
 
   ngAfterViewInit(): void {
     this.refreshTable();
@@ -33,7 +37,7 @@ export class SlotComponent implements AfterViewInit{
   refreshTable(){
     let activeLocalId = localStorage.getItem('active_local_id');
     if(activeLocalId != null){
-      this.slotService.getSlotsByLocalId('2')
+      this.slotService.getSlotsByLocalId(activeLocalId)
       .then((response: any) => {
         this.slotsInLocal = JSON.parse(response);
       });
@@ -78,7 +82,7 @@ export class SlotComponent implements AfterViewInit{
     });
   }
   
-  onSave() {
-  throw new Error('Method not implemented.');
+  openSlotSend(slotId:number|undefined) {
+    this.router.navigate(['/slot-send'], { queryParams: { slotid: `${slotId}` }});
   }
 }
