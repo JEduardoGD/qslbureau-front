@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import { RegionalRepresentative } from 'src/entity/RegionalRepresentative.entity';
 import { resolve } from 'path';
 import { Slot } from 'src/entity/Slot.entity';
+import { InputValidation } from 'src/entity/InputValidation.entity';
+import { error } from 'console';
 
 @Component({
   selector: 'app-slot-send-component',
@@ -20,7 +22,12 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
   shippingMethods: ShippingMethod[] = [];
   shippingMethod: ShippingMethod | undefined;
   addressTextArea = new FormControl();
-  regionalRepresentative = new FormControl();
+  regionalRepresentative : RegionalRepresentative = {
+    id: undefined,
+    name: undefined,
+    lastname: undefined,
+    username: undefined
+  };
   shippingMethodKey: string = '';
   slot : Slot = {
     id: undefined,
@@ -36,6 +43,18 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
   };
   trackingCodeFC = new FormControl();
   regionalRepresentatives : RegionalRepresentative[] = [];
+  regionalRepresentativeKey: string = '';
+  inputValidation: InputValidation = {
+    shipId: undefined,
+    idSlot: undefined,
+    shippingMethodId: undefined,
+    address: undefined,
+    regionalRepresentativeId: undefined,
+    trackingCode: undefined,
+    error: undefined,
+    valid: undefined
+  };
+  shipId: number| undefined;
 
 
   constructor(private slotService: SlotService, private route: ActivatedRoute){}
@@ -110,52 +129,66 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
     this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].haveTracking ? this.trackingCodeFC.enable() : this.trackingCodeFC.disable();
   }
 
-  validateInputs():Promise<boolean>{
+  changeRegionalRepresentative() {
+    console.log('changeRegionalRepresentative...');
+    this.regionalRepresentative = this.regionalRepresentatives.filter(rr => rr.id == +this.regionalRepresentativeKey)[0];
+    this.shippingMethod = this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0];
+    this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].haveTracking ? this.trackingCodeFC.enable() : this.trackingCodeFC.disable();
+  }
+
+  validateInputs():Promise<any>{
     console.log('validateInputs...');
-    return new Promise<boolean>((resolve, reject) => {
-      if(this.shippingMethod == undefined){
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Se requiere el metodo de envio'
-        });
-        resolve(false);
-      }
-      if(this.shippingMethod != undefined){
-        let smk = this.shippingMethod.key ?? ''
-        if(!['PERSONAL', 'REGIONAL'].includes(smk) && this.addressTextArea.value == ''){
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Se requiere direccion para el metodo de envio seleccionado'
-          });
-        }
-        resolve(false);
-      }
+    return new Promise<any>((resolve, reject) => {
+      this.slotService.validateInputs({
+        shipId: this.shipId,
+        idSlot: this.slotid != undefined ? +this.slotid : undefined,
+        shippingMethodId: this.shippingMethod?.id,
+        address: this.addressTextArea.value,
+        regionalRepresentativeId: this.regionalRepresentativeKey,
+        trackingCode: this.trackingCodeFC.value,
+        error: undefined,
+        valid: undefined
+      })
+      .then((response: any) => {
+        this.inputValidation = JSON.parse(response);
+        resolve(null);
+      });
     })
   }
 
   sendSlot(){
     console.log('sendSlot...')
     this.validateInputs()
-    .then((s) => {
+    .then(() => {
       console.log('to send update...')
       console.log('a: ' + this.addressTextArea.value);
-      this.slotService.updateShipping({
-        id: undefined,
-        datetime: undefined,
-        slotId: this.slotid != undefined ? +this.slotid : undefined,
-        shippingMethodId: this.shippingMethod?.id,
-        zoneId: undefined,
-        address: this.addressTextArea.value,
-        trackingCode: this.trackingCodeFC.value
-      })
-      .then(r => {
-        if(r){
-          console.log('rrrrrrrrrrrrrr');
-          console.log(r);
-        }
-      });
+      if(this.inputValidation.valid){
+        this.slotService.updateShipping(this.inputValidation)
+        .then((iv) => {
+          console.log(iv);
+        })
+        .then(() => {
+          if(this.inputValidation.error)(
+            Swal.fire({
+              icon: 'error',
+              title: 'Error de validación de campos',
+              text: this.inputValidation.error
+            })
+          )
+        })
+      }
+
+      if(!this.inputValidation.valid){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la validación de campos',
+          text: this.inputValidation.error          
+        })
+      }
+    })
+    .catch(error => {
+      console.log('errorerrorerrorerrorerror');
+      console.log(error);
     })
   }
 }

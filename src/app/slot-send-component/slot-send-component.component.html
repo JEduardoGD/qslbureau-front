@@ -1,5 +1,5 @@
-<div class="container-fluid">
-    <div class="container-fluid">
+<div class="container">
+    <div *ngIf="slotid !=undefined" class="container container-fluid">
         <h3>Captura datos de envio</h3>
         <form>
             <div class="form-group">
@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label for="regionalRepresentative">Representante regional</label>
-                <select class="form-control" id="regionalRepresentative" [(ngModel)]="regionalRepresentatives" name="regionalRepresentative">
+                <select class="form-control" id="regionalRepresentative" [(ngModel)]="regionalRepresentativeKey" name="regionalRepresentative">
                     <option *ngFor="let rr of regionalRepresentatives" [ngValue]="rr.id">{{ rr.name }}</option>
                 </select>
                 <small id="shippingMethodSelectHelp" class="form-text text-muted">Seleccione metodo de envio.</small>
