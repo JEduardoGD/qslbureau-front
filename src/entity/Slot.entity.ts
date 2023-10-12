@@ -1,5 +1,6 @@
 export interface Slot {
-    id: number | undefined;
+    shipId: number | undefined;
+    slotId: number | undefined;
     localId: number | undefined;
     callsignto: string | undefined;
     slotNumber: number | undefined;

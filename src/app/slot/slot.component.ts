@@ -16,7 +16,8 @@ throw new Error('Method not implemented.');
 
   slotsInLocal: Slot[] = [];
   slotEdited: Slot = {
-    id: undefined,
+    shipId: undefined,
+    slotId: undefined,
     localId: undefined,
     callsignto: undefined,
     slotNumber: undefined,

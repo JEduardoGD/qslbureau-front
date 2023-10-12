@@ -1,14 +1,12 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SlotService } from '../slot.service';
 import { ShippingMethod } from 'src/entity/shipping-method.entity';
 import { FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { RegionalRepresentative } from 'src/entity/RegionalRepresentative.entity';
-import { resolve } from 'path';
 import { Slot } from 'src/entity/Slot.entity';
 import { InputValidation } from 'src/entity/InputValidation.entity';
-import { error } from 'console';
 
 @Component({
   selector: 'app-slot-send-component',
@@ -20,7 +18,7 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
   slotid: string | undefined;
   slotsForSend: Slot[] = [];
   shippingMethods: ShippingMethod[] = [];
-  shippingMethod: ShippingMethod | undefined;
+  shippingMethod = new FormControl();
   addressTextArea = new FormControl();
   regionalRepresentative : RegionalRepresentative = {
     id: undefined,
@@ -30,7 +28,8 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
   };
   shippingMethodKey: string = '';
   slot : Slot = {
-    id: undefined,
+    shipId: undefined,
+    slotId: undefined,
     localId: undefined,
     callsignto: undefined,
     slotNumber: undefined,
@@ -39,7 +38,7 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
     closedAt: undefined,
     statusId: undefined,
     qslsInSlot: undefined,
-    confirmCode: undefined
+    confirmCode: undefined,
   };
   trackingCodeFC = new FormControl();
   regionalRepresentatives : RegionalRepresentative[] = [];
@@ -55,9 +54,12 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
     valid: undefined
   };
   shipId: number| undefined;
+  iss:boolean = true;
 
-
-  constructor(private slotService: SlotService, private route: ActivatedRoute){}
+  constructor(
+    private slotService: SlotService,
+    private route: ActivatedRoute,
+    private router: Router){}
   
   ngOnInit() {
     this.route.queryParams
@@ -65,7 +67,7 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
         this.slotid = params['slotid'];
         this.slotService.getSlotById(params['slotid'])
         .then((response: any) => {
-          this.slot = JSON.parse(response);
+          this.slot = JSON.parse(response)
         })
         .then((response) => {
           this.slotService.getlocalRepresentativesFor(this.slot.callsignto)
@@ -74,17 +76,24 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
           });
         })
       
-        this.slotService.getShippingMethodOfSlotId(params['slotid'])
+        this.slotService.getShippingMethodsForSlotid(params['slotid'])
         .then((response: any) => {
-          this.shippingMethod = JSON.parse(response);
+          this.shippingMethods = JSON.parse(response);
         });
-        
+
+        this.slotService.getShipOfSlotId(params['slotid'])
+        .then((response: any) => {
+          this.inputValidation = JSON.parse(response);
+        });
       }
     );
   }
 
+  isSelected(arg:number|undefined){
+    return this.inputValidation.shippingMethodId === arg;
+  }
+
   ngAfterViewInit(){
-    this.getShippingMethods();
     this.refreshTable();
   }
 
@@ -111,28 +120,18 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
     }
   }
 
-  getShippingMethods(){
-    console.log('getShippingMethods...');
-    let activeLocalId = localStorage.getItem('active_local_id');
-    if(activeLocalId != null){
-      this.slotService.getShippingMethodsForSlotid(this.slotid)
-      .then((response: any) => {
-        this.shippingMethods = JSON.parse(response);
-      });
-    }
-  }
-
   changeShippingMethod() {
     console.log('changeShippingMethod...');
     ['PERSONAL', 'REGIONAL'].includes(this.shippingMethodKey) ? this.addressTextArea.disable() : this.addressTextArea.enable();
-    this.shippingMethod = this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0];
+    this.shippingMethod.setValue(this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].key);
     this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].haveTracking ? this.trackingCodeFC.enable() : this.trackingCodeFC.disable();
+
   }
 
   changeRegionalRepresentative() {
     console.log('changeRegionalRepresentative...');
     this.regionalRepresentative = this.regionalRepresentatives.filter(rr => rr.id == +this.regionalRepresentativeKey)[0];
-    this.shippingMethod = this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0];
+    this.shippingMethod.setValue(this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].key);
     this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].haveTracking ? this.trackingCodeFC.enable() : this.trackingCodeFC.disable();
   }
 
@@ -142,7 +141,7 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
       this.slotService.validateInputs({
         shipId: this.shipId,
         idSlot: this.slotid != undefined ? +this.slotid : undefined,
-        shippingMethodId: this.shippingMethod?.id,
+        shippingMethodId: this.shippingMethods.filter(sp => sp.key == this.shippingMethodKey)[0].id,
         address: this.addressTextArea.value,
         regionalRepresentativeId: this.regionalRepresentativeKey,
         trackingCode: this.trackingCodeFC.value,
@@ -160,12 +159,12 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
     console.log('sendSlot...')
     this.validateInputs()
     .then(() => {
-      console.log('to send update...')
-      console.log('a: ' + this.addressTextArea.value);
+      console.log('continue')
       if(this.inputValidation.valid){
         this.slotService.updateShipping(this.inputValidation)
         .then((iv) => {
-          console.log(iv);
+          console.log('result')
+          
         })
         .then(() => {
           if(this.inputValidation.error)(
@@ -190,5 +189,9 @@ export class SlotSendComponentComponent implements OnInit, AfterViewInit{
       console.log('errorerrorerrorerrorerror');
       console.log(error);
     })
+  }
+  
+  openSlotSend(slotId:number|undefined) {
+    this.router.navigate(['/slot-send'], { queryParams: { slotid: `${slotId}` }});
   }
 }

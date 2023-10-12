@@ -182,41 +182,6 @@ export class SlotService {
     }
   }
   
-  getShippingMethodOfSlotId(slotid:string|undefined):Promise<string>{
-    if(slotid == undefined){
-      return Promise.resolve('[]');
-    } else {
-      let auth_token = localStorage.getItem('auth_token');
-      return new Promise((resolve, reject) => {
-        let httpOptions = {
-          headers: new HttpHeaders({
-            'Content-Type':  'application/json',
-            Authorization: `Bearer ${auth_token}`
-          })
-        };
-        this.http.get(`${environment.apiUrl}${this.shippingUrl}/forslotid/${slotid}`, httpOptions)
-        .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
-          this.errorMessage = error.message;
-          console.error('There was an error!', error);
-          // after handling error, return a new observable 
-          // that doesn't emit any values and completes
-          if(error.status == HttpStatusCode.Unauthorized){
-            Swal.fire({
-              icon: 'error',
-              title: `Las credenciales han expirado.`
-            }).then(() =>{
-              this.router.navigate(['/logout']);
-            });
-          }
-          return of();
-        }))
-        .subscribe(data => {
-          resolve(data.jsonPayload);
-        });
-      });
-    }
-  }
-  
   getShipOfSlotId(slotid:string|undefined):Promise<string>{
     if(slotid == undefined){
       return Promise.resolve('{}');
@@ -320,7 +285,7 @@ export class SlotService {
   }
 
   validateInputs(inputValidation : InputValidation):Promise<InputValidation>{
-    console.log('updateShipping...')
+    console.log('validateInputs...')
     let auth_token = localStorage.getItem('auth_token');
     return new Promise<InputValidation>((resolve, reject) => {
       let httpOptions = {
