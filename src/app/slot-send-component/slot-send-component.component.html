@@ -20,10 +20,10 @@
             </div>
             <div class="form-group">
                 <label for="shippingMethodSelect">Metodo de envio</label>
-                <select class="form-control" id="shippingMethodSelect" (change)="changeShippingMethod()" [(ngModel)]="shippingMethodKey" name="shippingMethodSelect">
+                <select class="form-control" id="shippingMethodSelect" (change)="changeShippingMethod()" [(ngModel)]="inputValidation.shippingMethodId" name="shippingMethodSelect">
                     <option
                         *ngFor="let sm of shippingMethods"
-                        [ngValue]="sm.key"
+                        [ngValue]="sm.id"
                         [selected]="sm.id == inputValidation.shippingMethodId">
                         {{ sm.id }} - {{ sm.name }} - {{ sm.key }}
                       </option>
@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="regionalRepresentative">Representante regional</label>
-                <select class="form-control" id="regionalRepresentative" [(ngModel)]="regionalRepresentativeKey" name="regionalRepresentative">
+                <select class="form-control" id="regionalRepresentative" [(ngModel)]="inputValidation.regionalRepresentativeId" [formControl]="regionalRepresentativeFC" name="regionalRepresentative">
                     <option
                       *ngFor="let rr of regionalRepresentatives"
                       [ngValue]="rr.id"

@@ -4,4 +4,5 @@ export interface ShippingMethod {
     name: string | undefined;
     description: string | undefined;
     haveTracking: boolean | undefined;
+    requireAddress: boolean | undefined;
 }
