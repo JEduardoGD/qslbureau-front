@@ -1,0 +1,95 @@
+<div class="container">
+    <div *ngIf="slotid !=undefined" class="container container-fluid">
+        <h3>Captura datos de envio</h3>
+        <form>
+            <div class="form-group">
+              <label for="slotNumber">Numero de slot</label>
+              <input type="text" class="form-control" id="slotNumber" disabled value="{{slot.slotNumber}}">
+            </div>
+            <div class="form-group">
+              <label for="slotId">ID de slot</label>
+              <input type="text" class="form-control" id="slotId" disabled value="{{slot.slotId}}">
+            </div>
+            <div class="form-group">
+              <label for="slotForCallsing">Slot para callsign</label>
+              <input type="text" class="form-control" id="slotForCallsing" disabled value="{{slot.callsignto}}">
+            </div>
+            <div class="form-group">
+              <label for="qslsInSlot">Qsls  en el slot</label>
+              <input type="text" class="form-control" id="qslsInSlot" disabled value="{{slot.qslsInSlot}}">
+            </div>
+            <div class="form-group">
+                <label for="shippingMethodSelect">Metodo de envio</label>
+                <select class="form-control" id="shippingMethodSelect" (change)="changeShippingMethod()" [(ngModel)]="inputValidation.shippingMethodId" name="shippingMethodSelect">
+                    <option
+                        *ngFor="let sm of shippingMethods"
+                        [ngValue]="sm.id"
+                        [selected]="sm.id == inputValidation.shippingMethodId">
+                        {{ sm.id }} - {{ sm.name }} - {{ sm.key }}
+                      </option>
+                </select>
+                <small id="shippingMethodSelectHelp" class="form-text text-muted">Seleccione metodo de envio.</small>
+            </div>
+            <div class="form-group">
+              <label for="address">Direccion</label>
+              <textarea class="form-control" id="address" [formControl]="addressTextArea" [value]="inputValidation.address"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="regionalRepresentative">Representante regional</label>
+                <select class="form-control" id="regionalRepresentative" [(ngModel)]="inputValidation.regionalRepresentativeId" [formControl]="regionalRepresentativeFC" name="regionalRepresentative">
+                    <option
+                      *ngFor="let rr of regionalRepresentatives"
+                      [ngValue]="rr.id"
+                      [selected]="rr.id == inputValidation.regionalRepresentativeId">
+                      {{ rr.name }}
+                    </option>
+                </select>
+                <small id="shippingMethodSelectHelp" class="form-text text-muted">Seleccione metodo de envio.</small>
+            </div>
+            <div class="form-group">
+              <label for="confirmCode">Codigo de confirmacion</label>
+              <input type="text" class="form-control" id="confirmCode" disabled value="{{slot.confirmCode}}">
+            </div>
+            <div class="form-group">
+              <label for="trackingCode">Condigo de rastreo</label>
+              <input type="text" class="form-control" id="trackingCode" name="trackingCode" [formControl]="trackingCodeFC" [value]="inputValidation.trackingCode">
+              <small id="shippingMethodSelectHelp" class="form-text text-muted">---</small>
+            </div>
+            <div class="form-group">
+                <button *ngIf="slot.statusId == 2004" type="submit" class="btn btn-primary" (click)="sendSlot()">Enviar</button>
+                <button *ngIf="slot.statusId == 2005" type="submit" class="btn btn-warning" (click)="sendSlot()">Actualizar envio</button>
+            </div>
+          </form>
+    </div>
+    <div class="container-fluid">
+        <h3>Slots listos para envio</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Slot number</th>
+                <th scope="col">TO</th>
+                <th scope="col">#QSLs</th>
+                <th scope="col">Created at</th>
+                <th scope="col">Satatus</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let slot of slotsForSend">
+                <td>{{ slot.slotNumber }}</td>
+                <td>
+                {{ slot.callsignto != undefined ? slot.callsignto : slot.country }}
+                </td>
+                <td>{{ slot.qslsInSlot }}</td>
+                <td>{{ slot.createdAt | date:'medium' }}</td>
+                <td>{{ getStatus(slot.statusId) }}</td>
+                <td>
+                  <button *ngIf="slot.statusId == 2004" type="button" class="btn btn-primary btn-sm" (click)="openSlotSend(slot.slotId)">Capturar envio</button>
+                  <button *ngIf="slot.statusId == 2005" type="button" class="btn btn-warning btn-sm" (click)="openSlotSend(slot.slotId)">Actualizar envio</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+  
