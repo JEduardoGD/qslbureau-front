@@ -192,4 +192,30 @@ export class SlotSendComponentComponent implements OnInit {
   openSlotSend(slotId:number|undefined) {
     this.router.navigate(['/slot-send'], { queryParams: { slotid: `${slotId}` }});
   }
+
+  closeForIntl(slotId:number|undefined){
+    Swal.fire({
+      title: '¿Está seguro?',
+      text: "Las qsls del slot se deben colocar en el buro de salida internacional",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, ¡cerrar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.slotService.moveToInternational(`${slotId}`)
+        .then((response: string) => {
+        })
+        .then(() => {
+          this.refreshTable();
+        })
+        .then(() => {
+          Swal.fire({
+            title: 'Cerrado',
+            text: 'Se ha movido el slot para envio en buro internacional.',
+            icon: 'success'
+          })
+        })
+      }
+    });
+  }
 }

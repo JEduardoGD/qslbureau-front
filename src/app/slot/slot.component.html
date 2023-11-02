@@ -27,7 +27,7 @@
           <td>
             <button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-primary btn-sm" (click)="closeForSending(slot.slotId)">Cerrar para envio</button>
             <button *ngIf="slot.statusId == 2004 && slot.country == undefined" type="button" class="btn btn-warning btn-sm" (click)="openSlotSend(slot.slotId)"   >Enviar</button>
-            <button *ngIf="slot.statusId == 2004 && slot.country != undefined" type="button" class="btn btn-info    btn-sm"                                   >Mover a Internacional</button>
+            <button *ngIf="slot.statusId == 2004 && slot.country != undefined" type="button" class="btn btn-info    btn-sm" (click)="closeForIntl(slot.slotId)"   >Mover a Internacional</button>
           </td>
         </tr>
       </tbody>

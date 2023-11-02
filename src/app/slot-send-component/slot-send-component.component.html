@@ -84,7 +84,8 @@
                 <td>{{ slot.createdAt | date:'medium' }}</td>
                 <td>{{ getStatus(slot.statusId) }}</td>
                 <td>
-                  <button *ngIf="slot.statusId == 2004" type="button" class="btn btn-primary btn-sm" (click)="openSlotSend(slot.slotId)">Capturar envio</button>
+                  <button *ngIf="slot.statusId == 2004 && slot.country == undefined" type="button" class="btn btn-warning btn-sm" (click)="openSlotSend(slot.slotId)">Actualizar envio</button>
+            <button *ngIf="slot.statusId == 2004 && slot.country != undefined" type="button" class="btn btn-info    btn-sm" (click)="closeForIntl(slot.slotId)">Mover a Internacional</button>
                   <button *ngIf="slot.statusId == 2005" type="button" class="btn btn-warning btn-sm" (click)="openSlotSend(slot.slotId)">Actualizar envio</button>
                 </td>
             </tr>
