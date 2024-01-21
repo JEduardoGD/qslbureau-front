@@ -75,7 +75,7 @@ throw new Error('Method not implemented.');
         .then(() => {
           Swal.fire({
             title: 'Cerrado',
-            text: `Se ha borrado el slot para envio, Código de confirmación: ${this.slotEdited.confirmCode}`,
+            text: this.slotEdited.confirmCode != undefined ? `Se ha cerrado el slot para envio, Código de confirmación: ${this.slotEdited.confirmCode}` : 'Se ha cerrado el slot para envio',
             icon: 'success'
           })
         })
@@ -85,5 +85,31 @@ throw new Error('Method not implemented.');
   
   openSlotSend(slotId:number|undefined) {
     this.router.navigate(['/slot-send'], { queryParams: { slotid: `${slotId}` }});
+  }
+
+  closeForIntl(slotId:number|undefined){
+    Swal.fire({
+      title: '¿Está seguro?',
+      text: "Las qsls del slot se deben colocar en el buro de salida internacional",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, ¡cerrar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.slotService.moveToInternational(`${slotId}`)
+        .then((response: string) => {
+        })
+        .then(() => {
+          this.refreshTable();
+        })
+        .then(() => {
+          Swal.fire({
+            title: 'Cerrado',
+            text: 'Se ha movido el slot para envio en buro internacional.',
+            icon: 'success'
+          })
+        })
+      }
+    });
   }
 }
