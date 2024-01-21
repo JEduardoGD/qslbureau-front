@@ -117,7 +117,8 @@ export class SlotSendComponentComponent implements OnInit {
   checkEnabledInputs(){
     console.log('checkEnabledInputs...');
     console.log(this.inputValidation);
-    if(this.inputValidation.shippingMethodId != undefined){
+    console.log(this.shippingMethods);
+    if(this.inputValidation.shippingMethodId != undefined && this.shippingMethods.length > 0){
       this.shippingMethods.filter(sp => sp.id == this.inputValidation.shippingMethodId)[0].requireAddress ? this.addressTextArea.enable() : this.addressTextArea.disable();
       this.shippingMethods.filter(sp => sp.id == this.inputValidation.shippingMethodId)[0].haveTracking ?  this.trackingCodeFC.enable() : this.trackingCodeFC.disable();
       this.shippingMethods.filter(sp => sp.id == this.inputValidation.shippingMethodId)[0].key == 'REGIONAL' ?  this.regionalRepresentativeFC.enable() : this.regionalRepresentativeFC.disable();
@@ -172,7 +173,8 @@ export class SlotSendComponentComponent implements OnInit {
           this.inputValidation = JSON.parse(iv);
         })
       }
-
+    })
+    .then(() => {
       if(!this.inputValidation.valid){
         console.log('not valid')
         console.log(this.inputValidation.valid)
@@ -180,6 +182,13 @@ export class SlotSendComponentComponent implements OnInit {
           icon: 'error',
           title: 'Error en la validación de campos',
           text: this.inputValidation.error          
+        })
+      }
+      if(this.inputValidation.valid){
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado',
+          text: 'Se ha actualizado correctamente'          
         })
       }
     })
@@ -203,6 +212,32 @@ export class SlotSendComponentComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.slotService.moveToInternational(`${slotId}`)
+        .then((response: string) => {
+        })
+        .then(() => {
+          this.refreshTable();
+        })
+        .then(() => {
+          Swal.fire({
+            title: 'Cerrado',
+            text: 'Se ha movido el slot para envio en buro internacional.',
+            icon: 'success'
+          })
+        })
+      }
+    });
+  }
+
+  setAsUnconfirmable(slotId:number|undefined){
+    Swal.fire({
+      title: '¿Está seguro?',
+      text: "El Slot sera marcado como 'No Confirmable'",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, ¡marcar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.slotService.setAsUnconfirmable(`${slotId}`)
         .then((response: string) => {
         })
         .then(() => {
