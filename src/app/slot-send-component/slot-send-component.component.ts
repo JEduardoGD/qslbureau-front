@@ -253,4 +253,8 @@ export class SlotSendComponentComponent implements OnInit {
       }
     });
   }
+
+  createShippingLabel(slotId:number|undefined){
+    this.slotService.createShippingLabel(`${slotId}`)
+  }
 }

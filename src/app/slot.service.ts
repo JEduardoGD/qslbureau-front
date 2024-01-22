@@ -16,6 +16,7 @@ export class SlotService {
   constructor(private http: HttpClient) { }
   slotUrl = '/slot';
   shippingUrl = '/shipping';
+  reportsUrl = '/reports';
   
   errorMessage : string | undefined;
   
@@ -357,6 +358,37 @@ export class SlotService {
         })
       };
       this.http.get(`${environment.apiUrl}${this.slotUrl}/setasunconfirmable/byid/${slotId}`, httpOptions)
+      .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        // after handling error, return a new observable 
+        // that doesn't emit any values and completes
+        if(error.status == HttpStatusCode.Unauthorized){
+          Swal.fire({
+            icon: 'error',
+            title: `Las credenciales han expirado.`
+          }).then(() =>{
+            this.router.navigate(['/logout']);
+          });
+        }
+        return of();
+      }))
+      .subscribe(data => {
+        resolve(data.jsonPayload);
+      });
+    });
+  }
+  
+  createShippingLabel(slotId: string | null):Promise<any>{
+    let auth_token = localStorage.getItem('auth_token');
+    return new Promise((resolve, reject) => {
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          Authorization: `Bearer ${auth_token}`
+        })
+      };
+      this.http.get(`${environment.apiUrl}${this.reportsUrl}/createshippinglabel`, httpOptions)
       .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
         this.errorMessage = error.message;
         console.error('There was an error!', error);
