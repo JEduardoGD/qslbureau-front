@@ -1,3 +1,26 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Migrar slot</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Seleccione el local al que migrar el slot:
+        <select class="form-select" size="3" aria-label="Size 3 select example" [(ngModel)]="localSelectedId">
+          <option *ngFor="let local of localsPosibleChange" [value]="local.id" [disabled]="local.id == activeLocalId">
+            {{ local.id }} - {{ local.name }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="doMigrateSlot()">Migrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container-fluid">
   <h3>Menú</h3>
   <div>
@@ -26,6 +49,8 @@
           <td>{{ getStatus(slot.statusId) }}</td>
           <td>
             <button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-primary btn-sm" (click)="closeForSending(slot.slotId)">Cerrar para envio</button>
+            <!--<button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Migrar slot</button>-->
+            <button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-secondary btn-sm" (click)="migrateSlot(slot.slotId)">Migrar slot</button>
             <button *ngIf="slot.statusId == 2004 && slot.country == undefined" type="button" class="btn btn-warning btn-sm" (click)="openSlotSend(slot.slotId)"   >Enviar</button>
             <button *ngIf="slot.statusId == 2004 && slot.country != undefined" type="button" class="btn btn-info    btn-sm" (click)="closeForIntl(slot.slotId)"   >Mover a Internacional</button>
           </td>

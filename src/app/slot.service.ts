@@ -16,6 +16,7 @@ export class SlotService {
   constructor(private http: HttpClient) { }
   slotUrl = '/slot';
   shippingUrl = '/shipping';
+  localUrl = '/local';
   
   errorMessage : string | undefined;
   
@@ -377,4 +378,70 @@ export class SlotService {
       });
     });
   }
+
+  // for localService
+  getLocalsForIdCapturer(idCapturer: string | null):Promise<any>{
+    let auth_token = localStorage.getItem('auth_token');
+    return new Promise((resolve, reject) => {
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          Authorization: `Bearer ${auth_token}`
+        })
+      };
+      this.http.get(`${environment.apiUrl}${this.localUrl}/getlocals/${idCapturer}`, httpOptions)
+      .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        // after handling error, return a new observable 
+        // that doesn't emit any values and completes
+        if(error.status == HttpStatusCode.Unauthorized){
+          Swal.fire({
+            icon: 'error',
+            title: `Las credenciales han expirado.`
+          }).then(() =>{
+            this.router.navigate(['/logout']);
+          });
+        }
+        return of();
+      }))
+      .subscribe(data => {
+        console.log(data)
+        resolve(data.jsonPayload);
+      });
+    });
+  }
+
+  migrateSlot(arg0: string, arg1: string):Promise<any>{
+    let auth_token = localStorage.getItem('auth_token');
+    return new Promise((resolve, reject) => {
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          Authorization: `Bearer ${auth_token}`
+        })
+      };
+      this.http.post(`${environment.apiUrl}${this.slotUrl}/migrate`, {slotid: arg0, newlocalid: arg1}, httpOptions)
+      .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        // after handling error, return a new observable 
+        // that doesn't emit any values and completes
+        if(error.status == HttpStatusCode.Unauthorized){
+          Swal.fire({
+            icon: 'error',
+            title: `Las credenciales han expirado.`
+          }).then(() =>{
+            this.router.navigate(['/logout']);
+          });
+        }
+        return of();
+      }))
+      .subscribe(data => {
+        resolve(data.jsonPayload);
+      });
+    });
+  }
+
+
 }
