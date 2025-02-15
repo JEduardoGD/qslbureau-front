@@ -3,6 +3,8 @@ import { SlotService } from '../slot.service';
 import Swal from 'sweetalert2';
 import { Slot } from 'src/entity/Slot.entity';
 import { Router } from '@angular/router';
+import { Local } from 'src/entity/Local.entity';
+import { resolve } from 'path';
 
 @Component({
   selector: 'app-slot',
@@ -10,11 +12,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./slot.component.css']
 })
 export class SlotComponent implements AfterViewInit{
-sendSlot(arg0: number|undefined) {
-throw new Error('Method not implemented.');
-}
+localSelectedId: number = 0;
+activeLocalId: number = 0;
 
   slotsInLocal: Slot[] = [];
+  localsPosibleChange: Local[] = [];
   slotEdited: Slot = {
     shipId: undefined,
     slotId: undefined,
@@ -28,6 +30,7 @@ throw new Error('Method not implemented.');
     qslsInSlot: undefined,
     confirmCode: undefined
   };
+  slotIdForMigrate: number = 0;
   
   constructor(private slotService: SlotService, private router: Router){}
 
@@ -36,9 +39,9 @@ throw new Error('Method not implemented.');
   }
 
   refreshTable(){
-    let activeLocalId = localStorage.getItem('active_local_id');
-    if(activeLocalId != null){
-      this.slotService.getSlotsByLocalId(activeLocalId)
+    this.activeLocalId = localStorage.getItem('active_local_id') != null ? Number(localStorage.getItem('active_local_id')) : 0;
+    if(this.activeLocalId != null){
+      this.slotService.getSlotsByLocalId(this.activeLocalId + "")
       .then((response: any) => {
         this.slotsInLocal = JSON.parse(response);
       });
@@ -75,15 +78,90 @@ throw new Error('Method not implemented.');
         .then(() => {
           Swal.fire({
             title: 'Cerrado',
-            text: `Se ha borrado el slot para envio, Código de confirmación: ${this.slotEdited.confirmCode}`,
+            text: this.slotEdited.confirmCode != undefined ? `Se ha cerrado el slot para envio, Código de confirmación: ${this.slotEdited.confirmCode}` : 'Se ha cerrado el slot para envio',
             icon: 'success'
           })
         })
       }
     });
   }
+
+  migrateSlot(slotId:number|undefined){
+    this.slotIdForMigrate = slotId == undefined ? 0 : slotId;
+    this.slotService.getLocalsForIdCapturer(localStorage.getItem('id_capturer'))
+    .then((response: any) => {
+      this.localsPosibleChange = JSON.parse(response);
+    })
+    .then(() => {
+      $('#exampleModal').modal('show');
+    })
+  }
+  
+  doMigrateSlot() {
+    if(`${this.localSelectedId}` == '0'){
+      Swal.fire({
+        title: 'Error', 
+        text: `Debe seleccionar un local`,
+        icon: 'error'
+      })
+    } else {
+      Swal.fire({
+        title: '¿Está seguro?',
+        text: "Va a trasladar el slot a un nuevo local",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, ¡trasladar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.slotService.migrateSlot(`${this.slotIdForMigrate}`, `${this.localSelectedId}`)
+          .then((response: string) => {
+            console.log('===============================')
+            console.log(response);
+          })
+          .then(() => {
+            Swal.fire({ 
+              title: 'Hecho',
+              text: `Se ha trasladado el slot`,
+              icon: 'success'
+            })
+          })
+          .then(() => {
+            this.refreshTable();
+          })
+        }
+      });
+    }
+  }
   
   openSlotSend(slotId:number|undefined) {
     this.router.navigate(['/slot-send'], { queryParams: { slotid: `${slotId}` }});
+  }
+
+  closeForIntl(slotId:number|undefined){
+    Swal.fire({
+      title: '¿Está seguro?',
+      text: "Las qsls del slot se deben colocar en el buro de salida internacional",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, ¡cerrar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.slotService.moveToInternational(`${slotId}`)
+        .then((response: string) => {
+          console.log('===============================')
+          console.log(response);
+        })
+        .then(() => {
+          this.refreshTable();
+        })
+        .then(() => {
+          Swal.fire({
+            title: 'Cerrado',
+            text: 'Se ha movido el slot para envio en buro internacional.',
+            icon: 'success'
+          })
+        })
+      }
+    });
   }
 }

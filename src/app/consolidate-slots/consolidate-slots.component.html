@@ -7,7 +7,7 @@
             <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="localIdSelected" (change)="changeLocalSelected()">
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="localIdSelected">
               <option *ngFor="let local of locals" [value]="local.id">
                  {{ local.name }}
               </option>
