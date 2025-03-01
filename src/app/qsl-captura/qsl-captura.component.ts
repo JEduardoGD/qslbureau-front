@@ -6,6 +6,7 @@ import { RowObject } from 'src/entity/RowObject.entity';
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
 import { Local } from 'src/entity/Local.entity';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-qsl-captura',
@@ -166,4 +167,26 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
     }
     this.refreshTable();
   }
+  myFunc() {
+    let anchor = document.createElement("a");
+    document.body.appendChild(anchor);
+    let file = environment.apiUrl + "/reports/reporte-qsls";
+
+    let auth_token = localStorage.getItem('auth_token');
+
+    let headers = new Headers();
+    headers.append('Authorization', `Bearer ${auth_token}`);
+
+    fetch(file, { headers })
+        .then(response => response.blob())
+        .then(blobby => {
+            let objectUrl = window.URL.createObjectURL(blobby);
+
+            anchor.href = objectUrl;
+            anchor.download = 'some-file.xlsx';
+            anchor.click();
+
+            window.URL.revokeObjectURL(objectUrl);
+        });
+      }
 }
