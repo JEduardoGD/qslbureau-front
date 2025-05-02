@@ -1,0 +1,105 @@
+
+<div class="container-fluid">
+    <h3>Detalle de contacto</h3>
+    <div>
+        <table class="table">
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Nombre:</td>
+                <td>{{ contactinfo?.name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Apellido:</td>
+                <td>{{ contactinfo?.surename }}</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Dirección</td>
+                <td>{{ contactinfo?.address }}</td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td colspan="2">Email</td>
+                <td>{{ contactinfo?.email }}</td>
+              </tr>
+              <tr>
+                <th scope="row">5</th>
+                <td colspan="2">Whatsapp</td>
+                <td>{{ contactinfo?.whatsapp }}</td>
+              </tr>
+              <tr>
+                <th scope="row">6</th>
+                <td colspan="2">¿Desea recibir emails?</td>
+                <td>{{ contactinfo?.wantemail }}</td>
+              </tr>
+              <tr>
+                <th scope="row">7</th>
+                <td colspan="2">Fecha de inicio</td>
+                <td>{{ contactinfo?.start }}</td>
+              </tr>
+              <tr>
+                <th scope="row">8</th>
+                <td colspan="2">Fecha de fin</td>
+                <td>{{ contactinfo?.end }}</td>
+              </tr>
+              <tr *ngIf="contactinfo?.wantemail == true && contactinfo?.email != null">
+                <th scope="row">9</th>
+                <td colspan="2">Enviar correo de contacto</td>
+                <td><button type="button" class="btn btn-primary btn-sm" (click)="sendContactEmail()">Enviar</button></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <h3>Contenido del slot</h3>
+    <div>
+      <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Local</th>
+                <th scope="col">Slot</th>
+                <th scope="col">To</th>
+                <th scope="col">Via</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let qslinfo of qslinfoList">
+            <td>{{ qslinfo.localId }}</td>
+            <td>{{ qslinfo.slotNumber }}</td>
+            <td>{{ qslinfo.toCallsign }}</td>
+            <td>{{ qslinfo.via }}</td>
+            <td>{{ qslinfo.c }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Total</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ total }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <h3>Correos enviados</h3>
+    <div>
+      <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID Envio</th>
+                <th scope="col">Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let qslinfo of qslinfoList">
+            <td>{{ qslinfo.localId }}</td>
+            <td>{{ qslinfo.slotNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+    

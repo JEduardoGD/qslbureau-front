@@ -8,6 +8,7 @@ import { QslCapturaComponent } from './qsl-captura/qsl-captura.component';
 import { ConsolidateSlotsComponent } from './consolidate-slots/consolidate-slots.component';
 import { SlotComponent } from './slot/slot.component';
 import { SlotSendComponentComponent } from './slot-send-component/slot-send-component.component';
+import { SlotDetailComponent } from './slot-detail/slot-detail.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'qsl-capture', component: QslCapturaComponent, canActivate: [ExpenseGuard]},
   { path: 'slot', component: SlotComponent, canActivate: [ExpenseGuard]},
   { path: 'slot-consolidate', component: ConsolidateSlotsComponent, canActivate: [ExpenseGuard]},
-  { path: 'slot-send', component: SlotSendComponentComponent, canActivate: [ExpenseGuard]}
+  { path: 'slot-send', component: SlotSendComponentComponent, canActivate: [ExpenseGuard]},
+  { path: 'slot-detail', component: SlotDetailComponent, canActivate: [ExpenseGuard]}
 ];
 
 @NgModule({
