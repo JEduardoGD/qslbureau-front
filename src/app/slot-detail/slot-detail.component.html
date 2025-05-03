@@ -47,7 +47,13 @@
               <tr *ngIf="contactinfo?.wantemail == true && contactinfo?.email != null">
                 <th scope="row">9</th>
                 <td colspan="2">Enviar correo de contacto</td>
-                <td><button type="button" class="btn btn-primary btn-sm" (click)="sendContactEmail()">Enviar</button></td>
+                <td>
+                  <button *ngIf="!loading" type="button" class="btn btn-primary btn-sm" (click)="sendContactEmail()">Enviar</button>
+                  <div *ngIf="loading" class="d-flex align-items-center">
+                    <strong>Enviando...</strong>
+                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
