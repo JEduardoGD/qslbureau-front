@@ -47,6 +47,7 @@ export class ContactService {
   }
 
   sendContactEmail(idContact: number | undefined, slotid: string | undefined) {
+    let id_capturer = localStorage.getItem('id_capturer');
     let auth_token = localStorage.getItem('auth_token');
     return new Promise((resolve, reject) => {
       let httpOptions = {
@@ -55,7 +56,7 @@ export class ContactService {
           Authorization: `Bearer ${auth_token}`
         })
       };
-      this.http.get(`${environment.apiUrl}${this.contactUrl}/sendmail/slotid/${slotid}/representativeId/${idContact}`, httpOptions)
+      this.http.get(`${environment.apiUrl}${this.contactUrl}/sendmail/slotid/${slotid}/contactid/${idContact}/representativeid/${id_capturer}`, httpOptions)
       .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
         this.errorMessage = error.message;
         console.error('There was an error!', error);
