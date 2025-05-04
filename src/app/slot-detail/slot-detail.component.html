@@ -55,6 +55,11 @@
                   </div>
                 </td>
               </tr>
+              <tr *ngIf="contactinfo?.listOf != null">
+                <th scope="row">10</th>
+                <td colspan="2">Se encuentra en la lista de</td>
+                <td>{{ contactinfo?.listOf }}</td>
+              </tr>
             </tbody>
           </table>
     </div>
