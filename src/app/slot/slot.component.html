@@ -31,6 +31,7 @@
           <th scope="col">TO</th>
           <th scope="col">#QSLs</th>
           <th scope="col">Created at</th>
+          <th scope="col">Last email sent</th>
           <th scope="col">Satatus</th>
           <th scope="col">Actions</th>
         </tr>
@@ -48,6 +49,7 @@
           </td>
           <td>{{ slot.qslsInSlot }}</td>
           <td>{{ slot.createdAt | date:'medium' }}</td>
+          <td [style.background-color]="slot.bgColor ? slot.bgColor : '#FFFFFF'">{{ slot.lastEmailSentAt | date:'medium' }}</td>
           <td>{{ getStatus(slot.statusId) }}</td>
           <td>
             <button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-primary btn-sm" (click)="closeForSending(slot.slotId)">Cerrar para envio</button>

@@ -28,7 +28,9 @@ activeLocalId: number = 0;
     closedAt: undefined,
     statusId: undefined,
     qslsInSlot: undefined,
-    confirmCode: undefined
+    confirmCode: undefined,
+    lastEmailSentAt: undefined,
+    bgColor: undefined
   };
   slotIdForMigrate: number = 0;
   

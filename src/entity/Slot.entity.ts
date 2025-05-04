@@ -10,4 +10,6 @@ export interface Slot {
     statusId: number | undefined;
     qslsInSlot: number | undefined;
     confirmCode: string | undefined;
+    lastEmailSentAt: Date | undefined;
+    bgColor: string | undefined;
 }
