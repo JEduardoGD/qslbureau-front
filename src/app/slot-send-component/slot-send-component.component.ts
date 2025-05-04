@@ -33,6 +33,8 @@ export class SlotSendComponentComponent implements OnInit {
     statusId: undefined,
     qslsInSlot: undefined,
     confirmCode: undefined,
+    lastEmailSentAt: undefined,
+    bgColor: undefined
   };
   trackingCodeFC = new FormControl();
   regionalRepresentatives : RegionalRepresentative[] = [];
