@@ -9,4 +9,5 @@ export interface Contactinfo {
     wantemail: boolean;
     start: Date | null;
     end: Date | null;
+    listOf: string | null;
 }

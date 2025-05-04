@@ -18,6 +18,7 @@ export class SlotDetailComponent {
   contactinfo: Contactinfo | undefined;
   qslinfoList: Qslinfo[] | undefined;
 total: number = 0;
+loading: boolean = false;
 
   constructor(
       private slotService: SlotService,
@@ -47,6 +48,7 @@ total: number = 0;
   }
 
   sendContactEmail() {
+    this.loading = true;
     this.contactService.sendContactEmail(this.contactinfo?.idContact, this.slotid)
     .then((result: any) => {
       if(result == null){
@@ -62,6 +64,9 @@ total: number = 0;
           icon: 'success'
         })
       }
+    })
+    .finally(() => {
+      this.loading = false;
     })
   }
 }
