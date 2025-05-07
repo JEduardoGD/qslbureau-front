@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SlotService } from '../slot.service';
+import { SlotService } from '../services/slot.service';
 import { ActivatedRoute } from '@angular/router';
-import { ContactService } from '../contact.service';
+import { ContactService } from '../services/contact.service';
 import { Slot } from 'src/entity/Slot.entity';
 import { Contactinfo } from 'src/entity/Contactinfo.entity';
 import { Qslinfo } from 'src/entity/Qslinfo.entity';

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { SlotService } from '../slot.service';
+import { SlotService } from '../services/slot.service';
 import Swal from 'sweetalert2';
 import { Slot } from 'src/entity/Slot.entity';
 import { Router } from '@angular/router';

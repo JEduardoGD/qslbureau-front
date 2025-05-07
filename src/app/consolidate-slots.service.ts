@@ -19,13 +19,11 @@ export class ConsolidateSlotsService {
   errorMessage: string | undefined;
 
   checkAplicableRules():Promise<number>{
-    let auth_token = localStorage.getItem('auth_token');
     let activeLocalId = localStorage.getItem('active_local_id');
     return new Promise((resolve, reject) => {
       let httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
-          Authorization: `Bearer ${auth_token}`
         })
       };
       this.http.get<Qslcard>(environment.apiUrl + this.aplicablerules + '/' + activeLocalId, httpOptions)
@@ -51,13 +49,11 @@ export class ConsolidateSlotsService {
   }
 
   applyRules():Promise<number>{
-    let auth_token = localStorage.getItem('auth_token');
     let activeLocalId = localStorage.getItem('active_local_id');
     return new Promise((resolve, reject) => {
       let httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
-          Authorization: `Bearer ${auth_token}`
         })
       };
       this.http.get<Qslcard>(environment.apiUrl + this.aplicablerules + '/applyforlocal/' + activeLocalId, httpOptions)

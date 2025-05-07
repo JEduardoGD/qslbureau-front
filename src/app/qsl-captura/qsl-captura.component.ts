@@ -172,12 +172,7 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
     document.body.appendChild(anchor);
     let file = environment.apiUrl + "/reports/reporte-qsls";
 
-    let auth_token = localStorage.getItem('auth_token');
-
-    let headers = new Headers();
-    headers.append('Authorization', `Bearer ${auth_token}`);
-
-    fetch(file, { headers })
+    fetch(file)
         .then(response => response.blob())
         .then(blobby => {
             let objectUrl = window.URL.createObjectURL(blobby);

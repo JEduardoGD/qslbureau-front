@@ -17,12 +17,10 @@ export class AppService {
   errorMessage: string | undefined;
 
   captureQslProm(qslcard: Qslcard):Promise<number>{
-    let auth_token = localStorage.getItem('auth_token');
     return new Promise((resolve, reject) => {
       let httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
-          Authorization: `Bearer ${auth_token}`
         })
       };
       this.http.put<Qslcard>(environment.apiUrl + this.qslCardUrl, qslcard, httpOptions)
@@ -66,12 +64,10 @@ export class AppService {
   }
 
   qslsByLocalId(localId: string | null): Observable<RowObject[]>{
-    let auth_token = localStorage.getItem('auth_token');
 
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        Authorization: `Bearer ${auth_token}`
       })
     };
     return this.http.get<RowObject[]>(environment.apiUrl + this.qslCardUrl + "/bylocalid/" + localId, httpOptions)
@@ -93,12 +89,9 @@ export class AppService {
   }
 
   deleteQslById(qslId: number){
-    let auth_token = localStorage.getItem('auth_token');
-
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        Authorization: `Bearer ${auth_token}`
       })
     };
     return this.http.delete<number>(environment.apiUrl + this.qslCardUrl + "/deletebyid/" + qslId, httpOptions)
