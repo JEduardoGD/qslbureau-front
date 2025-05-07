@@ -16,12 +16,10 @@ export class ContactService {
   errorMessage : string | undefined;
 
   getContactInfo(callsign: string | undefined):Promise<number>{
-      let auth_token = localStorage.getItem('auth_token');
       return new Promise((resolve, reject) => {
         let httpOptions = {
           headers: new HttpHeaders({
             'Content-Type':  'application/json',
-            Authorization: `Bearer ${auth_token}`
           })
         };
         this.http.get(`${environment.apiUrl}${this.contactUrl}/findactiveforcallsign/${callsign}`, httpOptions)
@@ -48,12 +46,10 @@ export class ContactService {
 
   sendContactEmail(idContact: number | undefined, slotid: string | undefined) {
     let id_capturer = localStorage.getItem('id_capturer');
-    let auth_token = localStorage.getItem('auth_token');
     return new Promise((resolve, reject) => {
       let httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
-          Authorization: `Bearer ${auth_token}`
         })
       };
       this.http.get(`${environment.apiUrl}${this.contactUrl}/sendmail/slotid/${slotid}/contactid/${idContact}/representativeid/${id_capturer}`, httpOptions)
