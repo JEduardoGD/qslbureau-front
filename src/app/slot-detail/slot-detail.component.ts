@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SlotService } from '../slot.service';
+import { SlotService } from '../services/slot.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContactService } from '../contact.service';
 import { Slot } from 'src/entity/Slot.entity';
