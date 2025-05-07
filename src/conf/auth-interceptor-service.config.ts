@@ -16,9 +16,9 @@ export class AuthInterceptorService implements HttpInterceptor {
   
     const token: string | null = localStorage.getItem('auth_token');
 
-    console.log('******************************************')
-    console.log(token);
-    console.log('******************************************')
+    //console.log('******************************************')
+    //console.log(token);
+    //console.log('******************************************')
 
     let request = req;
 
@@ -34,7 +34,7 @@ export class AuthInterceptorService implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
 
         if (err.status === 401) {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/logout');
         }
 
         return throwError( err );
