@@ -32,8 +32,6 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    console.log('--------------');
-    console.log(this.qsltoInput);
     this.qsltoInput.nativeElement.focus();
   }
 
