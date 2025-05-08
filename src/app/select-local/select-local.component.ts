@@ -30,8 +30,10 @@ export class SelectLocalComponent implements OnInit {
     if(localsString != null && localsString !== ''){
       this.locals = JSON.parse(localsString);
       let localSelected = this.locals.filter(q => (q.id + '') == t)[0];
-      let localSelectedIndex = this.locals.indexOf(localSelected);
-      this.localIdSelected = `${localSelectedIndex}: ${localSelected.id}`;
+      if(localSelected != undefined){
+          let localSelectedIndex = this.locals.indexOf(localSelected);
+          this.localIdSelected = `${localSelectedIndex}: ${localSelected.id}`;
+      }
     }
   }
 

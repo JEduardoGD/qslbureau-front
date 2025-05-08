@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -16,6 +16,9 @@ import { SelectLocalComponent } from './select-local/select-local.component';
 import { SlotComponent } from './slot/slot.component';
 import { SlotSendComponentComponent } from './slot-send-component/slot-send-component.component';
 import { SlotDetailComponent } from './slot-detail/slot-detail.component';
+
+// Interceptors
+import { AuthInterceptorService } from 'src/conf/auth-interceptor-service.config';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,14 @@ import { SlotDetailComponent } from './slot-detail/slot-detail.component';
     SweetAlert2Module.forRoot(),
     DataTablesModule
   ],
-  providers: [ConsolidateSlotsService],
+  providers: [
+    ConsolidateSlotsService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
