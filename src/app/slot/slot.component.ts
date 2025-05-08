@@ -42,11 +42,19 @@ activeLocalId: number = 0;
 
   refreshTable(){
     this.activeLocalId = localStorage.getItem('active_local_id') != null ? Number(localStorage.getItem('active_local_id')) : 0;
-    if(this.activeLocalId != null){
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    console.log(this.activeLocalId);
+    if(this.activeLocalId != null && this.activeLocalId > 0){
       this.slotService.getSlotsByLocalId(this.activeLocalId + "")
       .then((response: any) => {
         this.slotsInLocal = JSON.parse(response);
       });
+    } else {
+      Swal.fire({
+        title: 'Error', 
+        text: `Debe seleccionar un local activo`,
+        icon: 'error'
+      })
     }
   }
 
