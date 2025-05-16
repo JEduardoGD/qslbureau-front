@@ -58,6 +58,9 @@ activeLocalId: number = 0;
       case 2004: return 'cerrado para envio';
       case 2005: return 'enviado';
       case 2006: return 'confirmado';
+      case 2007: return 'movido a internacional';
+      case 2008: return 'no confirmable';
+      case 2009: return 'juntado';
       default: return '';
     }
   }

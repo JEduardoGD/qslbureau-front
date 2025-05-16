@@ -48,7 +48,7 @@
           </a>
           </td>
           <td>{{ slot.qslsInSlot }}</td>
-          <td>{{ slot.createdAt | date:'medium' }}</td>
+          <td>{{ slot.createdAt | date:'short' }}</td>
           <td [style.background-color]="slot.bgColor ? slot.bgColor : '#FFFFFF'">{{ slot.lastEmailSentAt | date:'medium' }}</td>
           <td>{{ getStatus(slot.statusId) }}</td>
           <td>
