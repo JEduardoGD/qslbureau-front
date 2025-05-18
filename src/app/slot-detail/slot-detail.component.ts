@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SlotService } from '../slot.service';
+import { SlotService } from '../services/slot.service';
 import { ActivatedRoute } from '@angular/router';
-import { ContactService } from '../contact.service';
+import { ContactService } from '../services/contact.service';
 import { Slot } from 'src/entity/Slot.entity';
 import { Contactinfo } from 'src/entity/Contactinfo.entity';
 import { Qslinfo } from 'src/entity/Qslinfo.entity';
@@ -17,8 +17,9 @@ export class SlotDetailComponent {
   slot: Slot | undefined;
   contactinfo: Contactinfo | undefined;
   qslinfoList: Qslinfo[] | undefined;
-total: number = 0;
-loading: boolean = false;
+  total: number = 0;
+  loading: boolean = false;
+updating: any;
 
   constructor(
       private slotService: SlotService,
@@ -67,6 +68,71 @@ loading: boolean = false;
     })
     .finally(() => {
       this.loading = false;
+    })
+  }
+  
+  updateEmail() {
+    this.updating = true;
+    this.contactService.callForUpdateContactEmail(this.slot?.callsignto)
+    .then((result: any) => {
+      if(result == null){
+        Swal.fire({
+          title: 'Error',
+          text: 'Ocurrio un error inesperado',
+          icon: 'error',
+        })
+      } else {
+        switch(result){
+          case 1:
+            Swal.fire("No se pudo obtener el correo desce QRZ.com", "", "info");
+            break
+          case 2:  
+            Swal.fire({
+              title: 'Atencion',
+              text: 'El correo en QRZ.com es el mismo que se encuentra capturado\nDesea actualizar el correo?',
+              icon: 'question',
+              showDenyButton: true,
+              confirmButtonText: "Actualizar",
+              denyButtonText: `No actualizar`
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.contactService.updateContactEmail(this.slot?.callsignto)
+                .then((result: any) => {
+                  if(result != null){
+                    Swal.fire("Actualizado!", "", "success").then(()=> { this.ngOnInit(); })
+                  }
+                })
+              } else if (result.isDenied) {
+                Swal.fire("No se actualiza el correo", "", "info");
+              }
+            });
+            break;
+          case 3: 
+            Swal.fire({
+              title: 'Atencion',
+              text: 'Los datos del contacto se pueden actualizar, desea actualizarlos?',
+              icon: 'question',
+              showDenyButton: true,
+              confirmButtonText: "Actualizar",
+              denyButtonText: `No actualizar`
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.contactService.updateContactEmail(this.slot?.callsignto)
+                .then((result: any) => {
+                  if(result != null){
+                    Swal.fire("Actualizado!", "", "success").then(()=> { this.ngOnInit(); })
+                  }
+                })
+              } else if (result.isDenied) {
+                Swal.fire("No se actualiza el correo", "", "info")
+              }
+            });
+            break;
+        }
+      }
+    })
+    .finally(() => {
+      this.updating = false;
     })
   }
 }

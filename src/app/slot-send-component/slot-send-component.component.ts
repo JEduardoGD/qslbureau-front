@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SlotService } from '../slot.service';
+import { SlotService } from '../services/slot.service';
 import { ShippingMethod } from 'src/entity/shipping-method.entity';
 import { FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';

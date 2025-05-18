@@ -10,18 +10,15 @@ import Swal from "sweetalert2";
 })
 export class ContactService {
   router: any;
-
   constructor(private http: HttpClient) { }
   contactUrl = '/contact';
   errorMessage : string | undefined;
 
   getContactInfo(callsign: string | undefined):Promise<number>{
-      let auth_token = localStorage.getItem('auth_token');
       return new Promise((resolve, reject) => {
         let httpOptions = {
           headers: new HttpHeaders({
             'Content-Type':  'application/json',
-            Authorization: `Bearer ${auth_token}`
           })
         };
         this.http.get(`${environment.apiUrl}${this.contactUrl}/findactiveforcallsign/${callsign}`, httpOptions)
@@ -48,12 +45,10 @@ export class ContactService {
 
   sendContactEmail(idContact: number | undefined, slotid: string | undefined) {
     let id_capturer = localStorage.getItem('id_capturer');
-    let auth_token = localStorage.getItem('auth_token');
     return new Promise((resolve, reject) => {
       let httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
-          Authorization: `Bearer ${auth_token}`
         })
       };
       this.http.get(`${environment.apiUrl}${this.contactUrl}/sendmail/slotid/${slotid}/contactid/${idContact}/representativeid/${id_capturer}`, httpOptions)
@@ -76,6 +71,55 @@ export class ContactService {
         resolve(data.objectPayload);
       });
     });
+  }
 
+  callForUpdateContactEmail(callsign: string | undefined) {
+    ///contact/callforupdateemail/callsign/{callsign}
+    return new Promise((resolve, reject) => {
+      this.http.get(`${environment.apiUrl}${this.contactUrl}/callforupdateemail/callsign/${callsign}`)
+      .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        // after handling error, return a new observable 
+        // that doesn't emit any values and completes
+        if(error.status == HttpStatusCode.Unauthorized){
+          Swal.fire({
+            icon: 'error',
+            title: `Las credenciales han expirado.`
+          }).then(() =>{
+            this.router.navigate(['/logout']);
+          });
+        }
+        return of();
+      }))
+      .subscribe(data => {
+        resolve(data.objectPayload);
+      });
+    });
+  }
+
+  updateContactEmail(callsign: string | undefined) {
+    let id_capturer = localStorage.getItem('id_capturer');
+    return new Promise((resolve, reject) => {
+      this.http.get(`${environment.apiUrl}${this.contactUrl}/updateemail/callsign/${callsign}`)
+      .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        // after handling error, return a new observable 
+        // that doesn't emit any values and completes
+        if(error.status == HttpStatusCode.Unauthorized){
+          Swal.fire({
+            icon: 'error',
+            title: `Las credenciales han expirado.`
+          }).then(() =>{
+            this.router.navigate(['/logout']);
+          });
+        }
+        return of();
+      }))
+      .subscribe(data => {
+        resolve(data.objectPayload);
+      });
+    });
   }
 }

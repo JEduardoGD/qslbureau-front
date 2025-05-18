@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
     <h3>Detalle de contacto</h3>
     <div>
@@ -44,13 +43,18 @@
                 <td colspan="2">Fecha de fin</td>
                 <td>{{ contactinfo?.end }}</td>
               </tr>
-              <tr *ngIf="contactinfo?.wantemail == true && contactinfo?.email != null">
+              <tr>
                 <th scope="row">9</th>
                 <td colspan="2">Enviar correo de contacto</td>
                 <td>
-                  <button *ngIf="!loading" type="button" class="btn btn-primary btn-sm" (click)="sendContactEmail()">Enviar</button>
+                  <button *ngIf="(contactinfo?.wantemail == true && contactinfo?.email != null) && !loading" type="button" class="btn btn-primary btn-sm" (click)="sendContactEmail()">Enviar</button>                  
+                  <button type="button" class="btn btn-warning btn-sm" (click)="updateEmail()">Actualizar correo</button>
                   <div *ngIf="loading" class="d-flex align-items-center">
                     <strong>Enviando...</strong>
+                    <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                  </div>
+                  <div *ngIf="updating" class="d-flex align-items-center">
+                    <strong>Actualizando...</strong>
                     <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                   </div>
                 </td>

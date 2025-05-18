@@ -24,29 +24,25 @@
             <h3>Buscar slots suceptibles de ser consolidados a partir de las reglas dadas de alta.</h3>
             <p>Aplica unicamente para el local activo</p>
         </div>
-        <div class="container">
-            <form>
-                <div class="form-group">
-                    <button [disabled]="consolidableDataList == null || consolidableDataList.length <= 0" type="button" class="btn btn-danger" (click)="appySlots()">Aplicar todos los traslados</button>
-                </div>
-            </form>
-        </div>
         <div>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Qsl Para</th>
-                        <th scope="col">Qsl VIA</th>
                         <th scope="col">Slot actual</th>
                         <th scope="col">Slot nuevo</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let consolidableData of consolidableDataList">
-                        <td>{{ consolidableData.qslDto?.to }}</td>
-                        <td>{{ consolidableData.qslDto?.via }}</td>
-                        <td>{{ consolidableData.oldSlotDto?.slotNumber }}</td>
-                        <td>{{ consolidableData.newSlotDto?.slotNumber }}</td>
+                        <td>{{ consolidableData.slotOrigen.slotNumber }} - {{consolidableData.slotOrigen.callsignto}}</td>
+                        <td>{{ consolidableData.slotDestino.slotNumber }} - {{consolidableData.slotDestino.callsignto}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="applyConsolidation(consolidableData)">
+                              <span *ngIf="consolidating" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Aplicar
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
