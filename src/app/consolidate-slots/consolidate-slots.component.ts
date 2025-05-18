@@ -4,6 +4,7 @@ import { ConsolidableData } from 'src/entity/ConsolidableData.entity';
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
 import { Local } from 'src/entity/Local.entity';
+import { AplicableRules } from 'src/entity/AplicableRules.entity';
 
 @Component({
   selector: 'app-consolidate-slots',
@@ -14,6 +15,7 @@ export class ConsolidateSlotsComponent implements OnInit, AfterViewInit{
   locals: Local[] = [];
   localIdSelected : string = '';
   localNameSelected : string = '';
+  consolidating: boolean = false;
   
   constructor(private consolidateSlotsService: ConsolidateSlotsService){}
   ngAfterViewInit(): void {
@@ -31,7 +33,7 @@ export class ConsolidateSlotsComponent implements OnInit, AfterViewInit{
     }
   }
 
-  consolidableDataList: ConsolidableData[] = [];
+  consolidableDataList: AplicableRules[] = [];
   updateTable(){
     let activeLocalId = localStorage.getItem('active_local_id');
     if(activeLocalId == null){
@@ -53,44 +55,6 @@ export class ConsolidateSlotsComponent implements OnInit, AfterViewInit{
     }
   }
 
-  appySlots(){
-    let activeLocalId = localStorage.getItem('active_local_id');
-    if(activeLocalId == null){
-      Swal.fire({
-        title: 'Error al capturar',
-        text: `Debe seleccionar el local activo`,
-        icon: 'error',
-      }).then(()=>{
-        let myModal = new bootstrap.Modal('#staticBackdrop', { keyboard: false });
-        myModal.show();
-      });
-    } else {
-      Swal.fire({
-        title: 'Esta seguro?',
-        text: "Va a trasladar todas las QSL segun el resumen mostrado",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Si, trasladar!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('result.isConfirmed')
-          this.consolidateSlotsService.applyRules().then((data:any) => {
-            let resultOfApply : ConsolidableData [] = data;
-            Swal.fire({
-              title: 'Hecho',
-              text: `Se realizaron ${resultOfApply.length} traslados`,
-              icon: 'success',
-            });
-            this.updateTable();
-          })
-          .catch((e) => {
-            console.error(e);
-          });
-        }
-      })
-    }
-  }
-
   changeLocalSelected() {
     console.log(this.localIdSelected);
     localStorage.setItem('active_local_id', this.localIdSelected);
@@ -103,5 +67,40 @@ export class ConsolidateSlotsComponent implements OnInit, AfterViewInit{
         this.localNameSelected = localObj.name;
       }
     }
+  }
+
+  applyConsolidation(aplicableRules: AplicableRules) {
+    Swal.fire({
+      title: 'Consolidacion',
+      text: `Va a consolidar las QSLs existentes en el slot numero ${aplicableRules.slotOrigen.slotNumber} - ${aplicableRules.slotOrigen.callsignto} con el slot numero ${aplicableRules.slotDestino.slotNumber} - ${aplicableRules.slotDestino.callsignto}, de acuerdo?`,
+      icon: 'question',
+      allowOutsideClick: false,
+      showCancelButton: true,
+      confirmButtonText: 'Si, consolidar!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Consolidando')
+        this.consolidating = true;
+        this.consolidateSlotsService.applyRules(aplicableRules).then((data:any) => {
+          this.consolidating = false;
+        })
+        .then(() => {
+          Swal.fire({
+            title: 'Consolidacion',
+            text: `Se consolidaron las QSLs existentes en el slot numero ${aplicableRules.slotOrigen.slotNumber} - ${aplicableRules.slotOrigen.callsignto} con el slot numero ${aplicableRules.slotDestino.slotNumber} - ${aplicableRules.slotDestino.callsignto}`,
+            icon: 'success',
+          });
+        })
+        .catch((e) => {
+          console.log('Error consolidando')
+          console.error(e);
+        }).finally(() => {
+          console.log('Consolidacion finalizada')
+          this.consolidating = false;
+          this.updateTable();
+        });
+      }
+    });
   }
 }
