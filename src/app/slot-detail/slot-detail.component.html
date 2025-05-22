@@ -59,10 +59,10 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="contactinfo?.listOf != null">
+              <tr>
                 <th scope="row">10</th>
                 <td colspan="2">Se encuentra en la lista de</td>
-                <td>{{ contactinfo?.listOf }}</td>
+                <td>{{ slot?.listOf }}</td>
               </tr>
             </tbody>
           </table>

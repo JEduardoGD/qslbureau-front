@@ -30,7 +30,8 @@ activeLocalId: number = 0;
     qslsInSlot: undefined,
     confirmCode: undefined,
     lastEmailSentAt: undefined,
-    bgColor: undefined
+    bgColor: undefined,
+    listOf: undefined
   };
   slotIdForMigrate: number = 0;
   
