@@ -12,4 +12,5 @@ export interface Slot {
     confirmCode: string | undefined;
     lastEmailSentAt: Date | undefined;
     bgColor: string | undefined;
+    listOf: string | undefined;
 }
