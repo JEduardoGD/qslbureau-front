@@ -104,14 +104,18 @@
       <table class="table">
         <thead>
             <tr>
-                <th scope="col">ID Envio</th>
+                <th scope="col">Callsign</th>
+                <th scope="col">Slot ID</th>
+                <th scope="col">Slot Number</th>
                 <th scope="col">Fecha</th>
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let qslinfo of qslinfoList">
-            <td>{{ qslinfo.localId }}</td>
-            <td>{{ qslinfo.slotNumber }}</td>
+          <tr *ngFor="let contact of contactList">
+            <td>{{ contact.callsign }}</td>
+            <td>{{ contact.slotId }}</td>
+            <td>{{ contact.slotNumber }}</td>
+            <td>{{ contact.datetime | date:'medium' }}</td>
           </tr>
         </tbody>
       </table>
