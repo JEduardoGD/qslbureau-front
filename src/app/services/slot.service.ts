@@ -346,7 +346,7 @@ export class SlotService {
         return of();
       }))
       .subscribe(data => {
-        resolve(data.jsonPayload);
+        resolve(data);
       });
     });
   }

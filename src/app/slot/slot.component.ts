@@ -5,6 +5,7 @@ import { Slot } from 'src/entity/Slot.entity';
 import { Router } from '@angular/router';
 import { Local } from 'src/entity/Local.entity';
 import { resolve } from 'path';
+import { Standardresponse } from 'src/entity/Standardresponse.entity';
 
 @Component({
   selector: 'app-slot',
@@ -43,8 +44,6 @@ activeLocalId: number = 0;
 
   refreshTable(){
     this.activeLocalId = localStorage.getItem('active_local_id') != null ? Number(localStorage.getItem('active_local_id')) : 0;
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    console.log(this.activeLocalId);
     if(this.activeLocalId != null && this.activeLocalId > 0){
       this.slotService.getSlotsByLocalId(this.activeLocalId + "")
       .then((response: any) => {
@@ -128,16 +127,20 @@ activeLocalId: number = 0;
       }).then((result) => {
         if (result.isConfirmed) {
           this.slotService.migrateSlot(`${this.slotIdForMigrate}`, `${this.localSelectedId}`)
-          .then((response: string) => {
-            console.log('===============================')
-            console.log(response);
-          })
-          .then(() => {
-            Swal.fire({ 
-              title: 'Hecho',
-              text: `Se ha trasladado el slot`,
-              icon: 'success'
-            })
+          .then((response: Standardresponse) => {
+            if(response.error){
+              Swal.fire({ 
+                title: 'Error',
+                text: `No se pudo migrar el slot: ${response.errorMessage}`,
+                icon: 'error'
+              })
+            } else {
+              Swal.fire({ 
+                title: 'Hecho',
+                text: `Se ha trasladado el slot`,
+                icon: 'success'
+              })
+            }
           })
           .then(() => {
             this.refreshTable();
@@ -161,19 +164,15 @@ activeLocalId: number = 0;
     }).then((result) => {
       if (result.isConfirmed) {
         this.slotService.moveToInternational(`${slotId}`)
-        .then((response: string) => {
-          console.log('===============================')
-          console.log(response);
-        })
-        .then(() => {
-          this.refreshTable();
-        })
         .then(() => {
           Swal.fire({
             title: 'Cerrado',
             text: 'Se ha movido el slot para envio en buro internacional.',
             icon: 'success'
           })
+        })
+        .then(() => {
+          this.refreshTable();
         })
       }
     });
