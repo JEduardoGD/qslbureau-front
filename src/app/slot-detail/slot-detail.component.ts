@@ -6,6 +6,8 @@ import { Slot } from 'src/entity/Slot.entity';
 import { Contactinfo } from 'src/entity/Contactinfo.entity';
 import { Qslinfo } from 'src/entity/Qslinfo.entity';
 import Swal from 'sweetalert2';
+import { EmailService } from '../services/email.service';
+import { CallsignDatecontact } from 'src/entity/callsignDatecontact.entity';
 
 @Component({
   selector: 'app-slot-detail',
@@ -19,12 +21,14 @@ export class SlotDetailComponent {
   qslinfoList: Qslinfo[] | undefined;
   total: number = 0;
   loading: boolean = false;
-updating: any;
+  updating: any;
+  contactList: CallsignDatecontact[] | undefined;
 
   constructor(
       private slotService: SlotService,
       private contactService: ContactService,
-      private route: ActivatedRoute){}
+      private route: ActivatedRoute,
+      private emailService: EmailService){}
       
   ngOnInit() {
     this.route.queryParams
@@ -44,6 +48,13 @@ updating: any;
             this.qslinfoList = response.objectPayload;
             this.total = this.qslinfoList?.reduce((total, qslinfo) => total + qslinfo.c, 0) || 0;
           });
+          this.emailService.getListOfEmailSendedForSlot(this.slot?.slotId?.toString())
+          .then((response: any) => {
+            this.contactList = response;
+          })
+          .then(() => {
+            console.log(this.contactList);
+          })
         })
       });
   }
