@@ -16,10 +16,6 @@ export class AuthInterceptorService implements HttpInterceptor {
   
     const token: string | null = localStorage.getItem('auth_token');
 
-    //console.log('******************************************')
-    //console.log(token);
-    //console.log('******************************************')
-
     let request = req;
 
     if (token) {

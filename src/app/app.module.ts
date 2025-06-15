@@ -19,6 +19,7 @@ import { SlotDetailComponent } from './slot-detail/slot-detail.component';
 
 // Interceptors
 import { AuthInterceptorService } from 'src/conf/auth-interceptor-service.config';
+import { AgrupadoresComponent } from './agrupadores/agrupadores.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AuthInterceptorService } from 'src/conf/auth-interceptor-service.config
     SelectLocalComponent,
     SlotComponent,
     SlotSendComponentComponent,
-    SlotDetailComponent
+    SlotDetailComponent,
+    AgrupadoresComponent
   ],
   imports: [
     BrowserModule,

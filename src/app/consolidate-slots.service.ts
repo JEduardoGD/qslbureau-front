@@ -5,6 +5,7 @@ import { Observable, catchError, of } from 'rxjs';
 import { AplicableRules } from 'src/entity/AplicableRules.entity';
 import { ConsolidableData } from 'src/entity/ConsolidableData.entity';
 import { Qslcard } from 'src/entity/Qslcard.entity';
+import { ReporteObj } from 'src/entity/reporte/Reporteobj';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -66,6 +67,36 @@ export class ConsolidateSlotsService {
           reject(error);
         });
         return of(this.errorMessage);
+      }))
+      .subscribe(data => {
+        resolve(data.objectPayload);
+      })
+    });
+  }
+
+  
+
+  reporteRedoreccopmes():Promise<ReporteObj[]>{
+    let activeLocalId = localStorage.getItem('active_local_id');
+    return new Promise((resolve, reject) => {
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+        })
+      };
+      this.http.get<{objectPayload: ConsolidableData[]}>(environment.apiUrl + this.aplicablerules + '/' + 'reporte-redoreccopmes', httpOptions)
+      .pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if(error.status == HttpStatusCode.Unauthorized){
+          Swal.fire({
+            icon: 'error',
+            title: `Las credenciales han expirado.`
+          }).then(() =>{
+            this.router.navigate(['/logout']);
+          });
+        }
+        return of();
       }))
       .subscribe(data => {
         resolve(data.objectPayload);
