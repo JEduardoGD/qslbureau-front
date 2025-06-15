@@ -32,7 +32,6 @@ export class EmailService {
         return of();
       }))
       .subscribe(data => {
-        console.log('fffffffffffffffff')
         resolve(data.objectPayload);
       });
     });

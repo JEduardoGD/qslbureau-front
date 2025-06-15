@@ -1,0 +1,34 @@
+<div class="container">
+    <div>
+        <h3>Reporte de agrupadores</h3>
+    </div>
+    <div class="container">
+        <button type="button" (click)="downloadOrphanCallsigns()" class="btn btn-primary">Obtener listado de callsigns huerfanos</button>
+    </div>
+    <div class="container">
+        <table class="table table-bordered border-primary table-sm">
+            <thead>
+                <tr>
+                    <th>Representative</th>
+                    <th>Zone</th>
+                    <th>TO</th>
+                    <th>Redirect</th>
+                    <th>Local ID</th>
+                    <th>Slot Num</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of rows">
+                    <td *ngIf="row.cellReporteObj !== undefined" [attr.rowspan]="row.cellReporteObj.rowspan"><a class="link-opacity-10-hover" [routerLink]="" (click)="downloadRepresentativeReport(row.cellReporteObj.representativeId)">{{row.cellReporteObj.text}}</a></td>
+                    <td *ngIf="row.cellObjRloz !== undefined" [attr.rowspan]="row.cellObjRloz.rowspan">{{row.cellObjRloz.text}}</td>
+                    <td *ngIf="row.cellCallsignTo !== undefined" [attr.rowspan]="row.cellCallsignTo.rowspan">{{row.cellCallsignTo.text}}</td>
+                    <td *ngIf="row.cellCallsignRedirect !== undefined" [attr.rowspan]="row.cellCallsignRedirect.rowspan">{{row.cellCallsignRedirect.text}}</td>
+                    <td *ngIf="row.cellLocalId !== undefined" [attr.rowspan]="row.cellLocalId.rowspan">{{row.cellLocalId.text}}</td>
+                    <td *ngIf="row.cellSlotNum !== undefined" [attr.rowspan]="row.cellSlotNum.rowspan">{{row.cellSlotNum.text}}</td>
+                    <td *ngIf="row.cellTotal !== undefined" [attr.rowspan]="row.cellTotal.rowspan">{{row.cellTotal.text}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
