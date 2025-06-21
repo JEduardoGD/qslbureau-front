@@ -58,6 +58,7 @@
             <button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-secondary btn-sm" (click)="migrateSlot(slot.slotId)">Migrar slot</button>
             <button *ngIf="slot.statusId == 2004 && slot.country == undefined" type="button" class="btn btn-warning btn-sm" (click)="openSlotSend(slot.slotId)"   >Enviar</button>
             <button *ngIf="slot.statusId == 2004 && slot.country != undefined" type="button" class="btn btn-info    btn-sm" (click)="closeForIntl(slot.slotId)"   >Mover a Internacional</button>
+            <button [disabled]="loading" *ngIf="slot.email != undefined" type="button" class="btn btn-info    btn-sm" (click)="sendEmail(slot.idContact, slot.slotId)"   >Send email</button>
           </td>
         </tr>
       </tbody>
