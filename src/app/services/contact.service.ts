@@ -43,7 +43,7 @@ export class ContactService {
       });
   }
 
-  sendContactEmail(idContact: number | undefined, slotid: string | undefined) {
+  sendContactEmail(idContact: number | undefined, slotid: number | undefined) {
     let id_capturer = localStorage.getItem('id_capturer');
     return new Promise((resolve, reject) => {
       let httpOptions = {
