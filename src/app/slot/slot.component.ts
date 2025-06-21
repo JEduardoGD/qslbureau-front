@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Local } from 'src/entity/Local.entity';
 import { resolve } from 'path';
 import { Standardresponse } from 'src/entity/Standardresponse.entity';
+import { ContactService } from '../services/contact.service';
 
 @Component({
   selector: 'app-slot',
@@ -32,11 +33,14 @@ activeLocalId: number = 0;
     confirmCode: undefined,
     lastEmailSentAt: undefined,
     bgColor: undefined,
-    listOf: undefined
+    listOf: undefined,
+    email: undefined,
+    idContact: undefined
   };
   slotIdForMigrate: number = 0;
+  loading: boolean | undefined;
   
-  constructor(private slotService: SlotService, private router: Router){}
+  constructor(private slotService: SlotService, private contactService: ContactService, private router: Router){}
 
   ngAfterViewInit(): void {
     this.refreshTable();
@@ -83,8 +87,6 @@ activeLocalId: number = 0;
     }).then((result) => {
       if (result.isConfirmed) {
         this.slotService.closeSlot(`${slotId}`)
-        .then((response: string) => {
-        })
         .then(() => {
           this.refreshTable();
         })
@@ -173,6 +175,42 @@ activeLocalId: number = 0;
         })
         .then(() => {
           this.refreshTable();
+        })
+      }
+    });
+  }
+
+  sendEmail(idContact:number|undefined, slotId:number|undefined) {
+    Swal.fire({
+      title: '¿Está seguro?',
+      text: "Va a enviar el correo de contacto",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, ¡enviar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        this.contactService.sendContactEmail(idContact, slotId)
+        .then((result: any) => {
+          if(result == null){
+            Swal.fire({
+              title: 'Error',
+              text: 'No se pudo enviar el correo de contacto',
+              icon: 'error'
+            })
+          } else {
+            Swal.fire({
+              title: 'Hecho',
+              text: 'Se ha enviado el correo de contacto',
+              icon: 'success'
+            })
+          }
+        })
+        .then(() => {
+          this.refreshTable();
+        })
+        .finally(() => {
+          this.loading = false;
         })
       }
     });

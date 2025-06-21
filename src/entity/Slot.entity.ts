@@ -13,4 +13,6 @@ export interface Slot {
     lastEmailSentAt: Date | undefined;
     bgColor: string | undefined;
     listOf: string | undefined;
+    email: string | undefined;
+    idContact: number | undefined;
 }

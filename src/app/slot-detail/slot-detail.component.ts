@@ -61,7 +61,7 @@ export class SlotDetailComponent {
 
   sendContactEmail() {
     this.loading = true;
-    this.contactService.sendContactEmail(this.contactinfo?.idContact, this.slotid)
+    this.contactService.sendContactEmail(this.contactinfo?.idContact, Number(this.slotid))
     .then((result: any) => {
       if(result == null){
         Swal.fire({
