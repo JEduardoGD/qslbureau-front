@@ -32,9 +32,9 @@
           <th scope="col">#QSLs</th>
           <th scope="col">Created at</th>
           <th scope="col">Last email sent</th>
-          <th scope="col">On list of</th>
           <th scope="col">Satatus</th>
           <th scope="col">Actions</th>
+          <th scope="col">On list of</th>
         </tr>
       </thead>
       <tbody>
@@ -51,7 +51,6 @@
           <td>{{ slot.qslsInSlot }}</td>
           <td>{{ slot.createdAt | date:'mediumDate' }}</td>
           <td [style.background-color]="slot.bgColor ? slot.bgColor : '#FFFFFF'">{{ slot.lastEmailSentAt | date:'mediumDate' }}</td>
-          <td>{{ slot.listOf }}</td>
           <td>{{ getStatus(slot.statusId) }}</td>
           <td>
             <button *ngIf="slot.statusId == 2002"                              type="button" class="btn btn-primary btn-sm" (click)="closeForSending(slot.slotId)">Cerrar para envio</button>
@@ -60,6 +59,7 @@
             <button *ngIf="slot.statusId == 2004 && slot.country != undefined" type="button" class="btn btn-info    btn-sm" (click)="closeForIntl(slot.slotId)"   >Mover a Internacional</button>
             <button [disabled]="loading" *ngIf="slot.email != undefined" type="button" class="btn btn-info    btn-sm" (click)="sendEmail(slot.idContact, slot.slotId)"   >Send email</button>
           </td>
+          <td>{{ slot.listOf }}</td>
         </tr>
       </tbody>
     </table>
