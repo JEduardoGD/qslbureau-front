@@ -333,8 +333,6 @@ export class SlotService {
       .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
         this.errorMessage = error.message;
         console.error('There was an error!', error);
-        // after handling error, return a new observable 
-        // that doesn't emit any values and completes
         if(error.status == HttpStatusCode.Unauthorized){
           Swal.fire({
             icon: 'error',
