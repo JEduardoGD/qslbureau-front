@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
@@ -30,7 +29,7 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
   token: string | null = localStorage.getItem('auth_token');
   reporteQslsCapturadasFilename: any;
 
-  constructor(fb: FormBuilder, private appService: AppService, private reportService: ReportService){
+  constructor(private appService: AppService, private reportService: ReportService){
     this.refreshTable();
   }
 

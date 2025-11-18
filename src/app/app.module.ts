@@ -20,6 +20,7 @@ import { SlotDetailComponent } from './slot-detail/slot-detail.component';
 // Interceptors
 import { AuthInterceptorService } from 'src/conf/auth-interceptor-service.config';
 import { AgrupadoresComponent } from './agrupadores/agrupadores.component';
+import { FindIntlComponent } from './find-intl/find-intl.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AgrupadoresComponent } from './agrupadores/agrupadores.component';
     SlotComponent,
     SlotSendComponentComponent,
     SlotDetailComponent,
-    AgrupadoresComponent
+    AgrupadoresComponent,
+    FindIntlComponent
   ],
   imports: [
     BrowserModule,
