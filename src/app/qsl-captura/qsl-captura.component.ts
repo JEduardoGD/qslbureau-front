@@ -27,7 +27,7 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
   qslVia: string = '';
 
 
-  constructor(fb: FormBuilder, private appService: AppService){
+  constructor(private appService: AppService){
     this.refreshTable();
   }
 
