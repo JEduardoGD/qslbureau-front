@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Qslcard } from 'src/entity/Qslcard.entity';
 import { AppService } from '../app.service';
 import { RowObject } from 'src/entity/RowObject.entity';
@@ -7,6 +6,7 @@ import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
 import { Local } from 'src/entity/Local.entity';
 import { environment } from 'src/environments/environment';
+import { ReportService } from '../services/report.service';
 
 @Component({
   selector: 'app-qsl-captura',
@@ -26,8 +26,10 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
   qslTo: string = '';
   qslVia: string = '';
 
+  token: string | null = localStorage.getItem('auth_token');
+  reporteQslsCapturadasFilename: any;
 
-  constructor(private appService: AppService){
+  constructor(private appService: AppService, private reportService: ReportService){
     this.refreshTable();
   }
 
@@ -165,21 +167,32 @@ export class QslCapturaComponent implements OnInit, AfterViewInit{
     }
     this.refreshTable();
   }
+
   myFunc() {
-    let anchor = document.createElement("a");
-    document.body.appendChild(anchor);
-    let file = environment.apiUrl + "/reports/reporte-qsls";
+    console.log('......................')
+    this.reportService.reporteQslsCapturadasFilename().then((filename: any) => {
+      console.log('======================')
+      console.log(filename)
+      console.log('======================')
+      let file = environment.apiUrl + "/reports/reporte-qsls";
+      fetch(file, {
+        method: 'GET',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + this.token
+        })
+      })
+          .then(response => response.blob())
+          .then(blobby => {
+            let anchor = document.createElement("a");
+            document.body.appendChild(anchor);
+              let objectUrl = window.URL.createObjectURL(blobby);
 
-    fetch(file)
-        .then(response => response.blob())
-        .then(blobby => {
-            let objectUrl = window.URL.createObjectURL(blobby);
+              anchor.href = objectUrl;
+              anchor.download = filename == undefined ? 'reporte-qsls-flename.xlsx' : filename.toString();
+              anchor.click();
 
-            anchor.href = objectUrl;
-            anchor.download = 'some-file.xlsx';
-            anchor.click();
-
-            window.URL.revokeObjectURL(objectUrl);
-        });
-      }
+              window.URL.revokeObjectURL(objectUrl);
+          });
+    });
+  }
 }

@@ -39,6 +39,7 @@ activeLocalId: number = 0;
   };
   slotIdForMigrate: number = 0;
   loading: boolean | undefined;
+  slot: Slot | undefined;
   
   constructor(private slotService: SlotService, private contactService: ContactService, private router: Router){}
 
@@ -136,13 +137,17 @@ activeLocalId: number = 0;
                 text: `No se pudo migrar el slot: ${response.errorMessage}`,
                 icon: 'error'
               })
+              reject()
             } else {
-              Swal.fire({ 
-                title: 'Hecho',
-                text: `Se ha trasladado el slot`,
-                icon: 'success'
-              })
+              this.slot = Object.assign(response.objectPayload, this.slot);
             }
+          })
+          .then(() => {
+            Swal.fire({
+              title: 'Hecho',
+              text: `Se ha trasladado al slot numero: ${this.slot?.slotNumber}\n(ID: ${this.slot?.slotId})`,
+              icon: 'success'
+            })
           })
           .then(() => {
             this.refreshTable();
@@ -216,3 +221,7 @@ activeLocalId: number = 0;
     });
   }
 }
+function reject() {
+  throw new Error('Function not implemented.');
+}
+
