@@ -10,6 +10,7 @@ import { SlotComponent } from './slot/slot.component';
 import { SlotSendComponentComponent } from './slot-send-component/slot-send-component.component';
 import { SlotDetailComponent } from './slot-detail/slot-detail.component';
 import { AgrupadoresComponent } from './agrupadores/agrupadores.component';
+import { FindIntlComponent } from './find-intl/find-intl.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'slot-consolidate', component: ConsolidateSlotsComponent, canActivate: [ExpenseGuard]},
   { path: 'slot-send', component: SlotSendComponentComponent, canActivate: [ExpenseGuard]},
   { path: 'slot-detail', component: SlotDetailComponent, canActivate: [ExpenseGuard]},
-  { path: 'agrupadores', component: AgrupadoresComponent, canActivate: [ExpenseGuard]}
+  { path: 'agrupadores', component: AgrupadoresComponent, canActivate: [ExpenseGuard]},
+  { path: 'find-intl', component: FindIntlComponent, canActivate: [ExpenseGuard]}
 ];
 
 @NgModule({

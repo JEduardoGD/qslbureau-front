@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form #form="ngForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">QSL TO</label>
+                        <input type="text" class="form-control" #qslto id="qslto" name="qslto" [(ngModel)]="qslTo" (ngModelChange)="onSubmit()">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Pais</th>
+                            <th>Asociado</th>
+                            <th>Direccion</th>
+                            <th>Cerrado</th>
+                            <th>Prefijos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let buro of buros">
+                            <td>{{ buro.pais }}</td>
+                            <td>{{ buro.asociado }}</td>
+                            <td>{{ buro.direccion }}</td>
+                            <td>{{ buro.cerrado ? 'Si' : 'No' }}</td>
+                            <td>{{ processPrefijos(buro.prefijos) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
