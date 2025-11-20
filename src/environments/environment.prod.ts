@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://192.168.0.199:8080',
+    apiUrl: 'https://fmreserver.webhop.me:5002/api',
     key: process.env["key"]
   };
 
