@@ -62,7 +62,7 @@ export class ReportService {
   
     reporteQslsCapturadasFilename(){
         return new Promise((resolve, reject) => {
-            this.http.get(`${environment.apiUrl}${this.reportsUrl}/reporte-qsls-flename`)
+            this.http.get(`${environment.apiUrl}${this.reportsUrl}/orphans-calls-report-filename`)
             .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
             this.errorMessage = error.message;
             console.error('There was an error!', error);
