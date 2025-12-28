@@ -25,6 +25,6 @@ export class FindIntlComponent {
   }
 
   processPrefijos(prefijos:Prefijo[]){
-    return prefijos.map(prefijo => `${prefijo.inicial}-${prefijo.final}`).join(', ');
+    return prefijos.map(prefijo => `${prefijo.regex}`).join(', ');
   }
 }
