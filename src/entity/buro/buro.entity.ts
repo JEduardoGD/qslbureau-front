@@ -32,6 +32,5 @@ export interface Buro {
     prefijos: Prefijo[];
 }
 export interface Prefijo {
-    inicial: string;
-    final: string;
+    regex: string;
 }
