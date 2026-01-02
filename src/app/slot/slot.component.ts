@@ -121,6 +121,7 @@ activeLocalId: number = 0;
         icon: 'error'
       })
     } else {
+      this.slot = undefined;
       Swal.fire({
         title: '¿Está seguro?',
         text: "Va a trasladar el slot a un nuevo local",
