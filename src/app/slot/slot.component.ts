@@ -103,6 +103,7 @@ activeLocalId: number = 0;
   }
 
   migrateSlot(slotId:number|undefined){
+    this.slot = undefined;
     this.slotIdForMigrate = slotId == undefined ? 0 : slotId;
     this.slotService.getLocalsForIdCapturer(localStorage.getItem('id_capturer'))
     .then((response: any) => {
@@ -121,7 +122,6 @@ activeLocalId: number = 0;
         icon: 'error'
       })
     } else {
-      this.slot = undefined;
       Swal.fire({
         title: '¿Está seguro?',
         text: "Va a trasladar el slot a un nuevo local",
