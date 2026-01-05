@@ -217,7 +217,7 @@ activeLocalId: number = 0;
         })
         .finally(() => {
           this.loading = false;
-        })
+        });
       }
     });
   }

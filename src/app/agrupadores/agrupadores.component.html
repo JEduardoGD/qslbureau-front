@@ -20,7 +20,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let row of rows">
-                    <td *ngIf="row.cellReporteObj !== undefined" [attr.rowspan]="row.cellReporteObj.rowspan"><a class="link-opacity-10-hover" [routerLink]="" (click)="downloadRepresentativeReport(row.cellReporteObj.representativeId)">{{row.cellReporteObj.text}}</a></td>
+                    <td *ngIf="row.cellReporteObj !== undefined" [attr.rowspan]="row.cellReporteObj.rowspan">
+                        <a class="link-opacity-10-hover" [routerLink]="" (click)="downloadRepresentativeReport(row.cellReporteObj.representativeId)">{{row.cellReporteObj.text}}</a>
+                        <button type="button" (click)="sendReportEmail(row.cellReporteObj.representativeId)" class="btn btn-primary">Enviar reporte por correo</button>
+                    </td>
                     <td *ngIf="row.cellObjRloz !== undefined" [attr.rowspan]="row.cellObjRloz.rowspan">{{row.cellObjRloz.text}}</td>
                     <td *ngIf="row.cellCallsignTo !== undefined" [attr.rowspan]="row.cellCallsignTo.rowspan">{{row.cellCallsignTo.text}}</td>
                     <td *ngIf="row.cellCallsignRedirect !== undefined" [attr.rowspan]="row.cellCallsignRedirect.rowspan">{{row.cellCallsignRedirect.text}}</td>

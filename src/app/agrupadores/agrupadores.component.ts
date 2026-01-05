@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { ConsolidateSlotsService } from '../consolidate-slots.service';
 import { CellObj } from 'src/entity/reporte/CellObj';
 import { RowObj } from 'src/entity/reporte/RowObj';
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 import { ReportService } from '../services/report.service';
 import { ReporteObj } from 'src/entity/reporte/Reporteobj';
+import { ContactService } from '../services/contact.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agrupadores',
@@ -18,10 +20,15 @@ export class AgrupadoresComponent {
   rows: RowObj[] = [];
 
   token: string | null = localStorage.getItem('auth_token');
+  http: any;
+  contactUrl: any;
+  errorMessage: any;
+  router: any;
 
   constructor(
     private reportService: ReportService,
-    private consolidateSlotsService: ConsolidateSlotsService){
+    private consolidateSlotsService: ConsolidateSlotsService,
+    private contactService: ContactService){
     this.consolidateSlotsService.reporteRedoreccopmes().then((data) => {
       //console.log(data);
       this.reporteObjs = data;
@@ -159,4 +166,25 @@ export class AgrupadoresComponent {
           });
     })
   }
+
+    sendReportEmail(arg0: number) {      
+              this.contactService.sendReportEmail(arg0)
+              .then((result: any) => {
+                if(result == null){
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo enviar el correo de contacto',
+                    icon: 'error'
+                  })
+                } else {
+                  Swal.fire({
+                    title: 'Hecho',
+                    text: 'Se ha enviado el correo de contacto',
+                    icon: 'success'
+                  })
+                }
+              })
+              .finally(() => {
+              })
+    }
 }
