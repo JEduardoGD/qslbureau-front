@@ -30,6 +30,7 @@ export interface Buro {
     pais: string;
     cerrado: boolean;
     prefijos: Prefijo[];
+    slotNumber: number;
 }
 export interface Prefijo {
     regex: string;

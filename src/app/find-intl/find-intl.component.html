@@ -21,6 +21,7 @@
                             <th>Direccion</th>
                             <th>Cerrado</th>
                             <th>Prefijos</th>
+                            <th>Slot Number</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,6 +31,7 @@
                             <td>{{ buro.direccion }}</td>
                             <td>{{ buro.cerrado ? 'Si' : 'No' }}</td>
                             <td>{{ processPrefijos(buro.prefijos) }}</td>
+                            <td>{{ buro.slotNumber == 0 ? '' : buro.slotNumber }}</td>
                         </tr>
                     </tbody>
                 </table>
