@@ -18,7 +18,7 @@ export class IntlService {
 ///buroes/findByCallsing/{localsign}
     findBuroesOfCallsign(qslto:Buro[]){
         return new Promise((resolve, reject) => {
-        this.http.get(`${environment.apiUrl}${this.buroesUrl}/findByCallsing/${qslto}`)
+        this.http.get(`${environment.apiUrl}${this.buroesUrl}/findByCallsing/${qslto}/localid/${localStorage.getItem('active_local_id')}`)
         .pipe(catchError((error: any, caught: Observable<any>): Observable<Standardresponse> => {
             this.errorMessage = error.message;
             console.error('There was an error!', error);
